@@ -19,28 +19,29 @@ sol2 := s solve: #(7 10 9).
 ]]]
 "
 Class {
-	#name : #PMLUPDecomposition,
-	#superclass : #Object,
+	#name : 'PMLUPDecomposition',
+	#superclass : 'Object',
 	#instVars : [
 		'rows',
 		'permutation',
 		'parity'
 	],
-	#category : #'Math-Matrix'
+	#category : 'Math-Matrix',
+	#package : 'Math-Matrix'
 }
 
-{ #category : #creation }
+{ #category : 'creation' }
 PMLUPDecomposition class >> direct: anArrayOfArrays [
 	
 	^ self basicNew initialize: anArrayOfArrays.
 ]
 
-{ #category : #creation }
+{ #category : 'creation' }
 PMLUPDecomposition class >> equations: anArrayOfArrays [
 	^ self new initialize: (anArrayOfArrays collect: [ :each | each copy ])
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PMLUPDecomposition >> backwardSubstitution: anArray [
 	"Private"
 	| n sum answer |
@@ -55,7 +56,7 @@ PMLUPDecomposition >> backwardSubstitution: anArray [
 	^answer
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PMLUPDecomposition >> decompose [
 	"Private"
 	| n |
@@ -68,7 +69,7 @@ PMLUPDecomposition >> decompose [
 		].
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 PMLUPDecomposition >> determinant [
 	| n |
 	permutation isNil
@@ -80,7 +81,7 @@ PMLUPDecomposition >> determinant [
 		  into: [ :det :each | n := n + 1. ( each at: n) * det ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PMLUPDecomposition >> forwardSubstitution: anArray [
 	"Private"
 	| n sum answer|
@@ -95,14 +96,14 @@ PMLUPDecomposition >> forwardSubstitution: anArray [
 	^answer
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PMLUPDecomposition >> initialize: anArrayOfArrays [
 	rows := anArrayOfArrays.
 	parity := 1.
 	^ self
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 PMLUPDecomposition >> inverseMatrixComponents [
 	| n inverseRows column |
 	permutation isNil
@@ -120,7 +121,7 @@ PMLUPDecomposition >> inverseMatrixComponents [
 	^inverseRows
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 PMLUPDecomposition >> largestPivotFrom: anInteger [
 	"Private - Answers the largest pivot element in column anInteger, from position anInteger upward."
 	| valueOfMaximum indexOfMaximum value |
@@ -136,7 +137,7 @@ PMLUPDecomposition >> largestPivotFrom: anInteger [
 	^ indexOfMaximum
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PMLUPDecomposition >> pivotAt: anInteger [
 	"Private"
 	| inversePivot size k |
@@ -153,7 +154,7 @@ PMLUPDecomposition >> pivotAt: anInteger [
 			].
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 PMLUPDecomposition >> printOn: aStream [
 	
 	| delimitingString |
@@ -170,13 +171,13 @@ PMLUPDecomposition >> printOn: aStream [
 		separatedBy: [ aStream cr ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PMLUPDecomposition >> protectedDecomposition [
 	"Private - If decomposition fails, set permutation to 0."
 	[ self decompose] on: Error do: [ :signal | permutation := 0. signal return: nil].
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PMLUPDecomposition >> solve: anArrayOrVector [
 	permutation isNil
 		ifTrue: [ self protectedDecomposition ].
@@ -186,7 +187,7 @@ PMLUPDecomposition >> solve: anArrayOrVector [
 			[self backwardSubstitution: ( self forwardSubstitution: anArrayOrVector)] on: ZeroDivide do: [:e|  nil] ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PMLUPDecomposition >> swapRow: anInteger1 withRow: anInteger2 [
 	"Private - Swap the rows indexed by the given integers."
 	| swappedRow |

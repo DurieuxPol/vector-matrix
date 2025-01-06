@@ -2,25 +2,26 @@
 I am responsible for the decomposition of a matrix, A say, into a product A = QR of an orthogonal matrix Q and an upper triangular matrix R
 "
 Class {
-	#name : #PMQRDecomposition,
-	#superclass : #Object,
+	#name : 'PMQRDecomposition',
+	#superclass : 'Object',
 	#instVars : [
 		'matrixToDecompose',
 		'colSize',
 		'r',
 		'q'
 	],
-	#category : #'Math-Matrix'
+	#category : 'Math-Matrix',
+	#package : 'Math-Matrix'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PMQRDecomposition class >> of: matrix [
 	matrix numberOfRows < matrix numberOfColumns ifTrue: [ 
 		self error: 'numberOfRows<numberOfColumns' ].
 	^ self new of: matrix
 ]
 
-{ #category : #arithmetic }
+{ #category : 'arithmetic' }
 PMQRDecomposition >> decompose [
 	"
 The method appears to be using Householder reflection. There is a wiki page
@@ -57,7 +58,7 @@ https://en.wikipedia.org/wiki/QR_decomposition#Using_Householder_reflections
 	^ Array with: q with: r
 ]
 
-{ #category : #arithmetic }
+{ #category : 'arithmetic' }
 PMQRDecomposition >> decomposeWithPivot [
 
 	| i vectorOfNormSquareds rank positionOfMaximum pivot matrixOfMinor |
@@ -127,7 +128,7 @@ PMQRDecomposition >> decomposeWithPivot [
 	^ Array with: q with: r with: pivot
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PMQRDecomposition >> householderReflectionOf: columnVector atColumnNumber: columnNumber [
 
 	| householderVector v identityMatrix householderMatrix |
@@ -140,25 +141,25 @@ PMQRDecomposition >> householderReflectionOf: columnVector atColumnNumber: colum
 	^ Array with: householderVector with: householderMatrix .
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PMQRDecomposition >> initialQMatrix [
 
 	^ PMSymmetricMatrix identity: colSize
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PMQRDecomposition >> initialRMatrix [
 
 	^ PMMatrix rows: matrixToDecompose rows deepCopy
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PMQRDecomposition >> numberOfColumns [
 
 	^ matrixToDecompose numberOfColumns
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PMQRDecomposition >> of: matrix [
 
 	matrixToDecompose := matrix.
@@ -167,7 +168,7 @@ PMQRDecomposition >> of: matrix [
 	q := self initialQMatrix.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PMQRDecomposition >> upperTriangularPartOf: matrix With: columnSize [
 
 	^ PMMatrix rows: (r rows copyFrom: 1 to: columnSize)

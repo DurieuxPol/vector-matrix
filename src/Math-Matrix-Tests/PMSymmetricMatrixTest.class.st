@@ -1,10 +1,11 @@
 Class {
-	#name : #PMSymmetricMatrixTest,
-	#superclass : #TestCase,
-	#category : #'Math-Matrix-Tests'
+	#name : 'PMSymmetricMatrixTest',
+	#superclass : 'TestCase',
+	#category : 'Math-Matrix-Tests',
+	#package : 'Math-Matrix-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMSymmetricMatrixTest >> testCrlInverse [
 	| m i |
 	m := PMSymmetricMatrix rows: #(#(2 2 3) #(2 4 5) #(3 5 6)).
@@ -16,7 +17,7 @@ a PMVector(0 1 -40)
 a PMVector(2 4 -51)"
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMSymmetricMatrixTest >> testEqual [
 	"= should work like in a SequenceableCollection  eg a PMVector and a Array can be equal"
 
@@ -38,7 +39,7 @@ PMSymmetricMatrixTest >> testEqual [
 	self assert: b ~= a
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMSymmetricMatrixTest >> testIdentityMatrix [
 	|expectedIdentityMatrix identityMatrix|
 
@@ -48,7 +49,7 @@ PMSymmetricMatrixTest >> testIdentityMatrix [
 	self assert: identityMatrix equals: expectedIdentityMatrix.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMSymmetricMatrixTest >> testInversePureLUP [
 	| m i |
 	m := PMSymmetricMatrix rows: #(#(2 2 3) #(2 4 5) #(3 5 6)).

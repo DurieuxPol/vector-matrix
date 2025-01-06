@@ -1,10 +1,11 @@
 Class {
-	#name : #PMJacobiTransformationTest,
-	#superclass : #TestCase,
-	#category : #'Math-Matrix-Tests'
+	#name : 'PMJacobiTransformationTest',
+	#superclass : 'TestCase',
+	#category : 'Math-Matrix-Tests',
+	#package : 'Math-Matrix-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMJacobiTransformationTest >> testEigenvalueOfIdentityMatrixIsOne [
 	"The eigenvalue of I is 1"
 
@@ -17,7 +18,7 @@ PMJacobiTransformationTest >> testEigenvalueOfIdentityMatrixIsOne [
 	self assert: jacobiTransformation evaluate equals: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMJacobiTransformationTest >> testEigenvectorsOfIdentityMatrixAreTheUnitVectors [
 	"The eigenvectors of I are (1 0) and (0 1), the unit basis vectors"
 

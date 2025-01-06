@@ -1,1 +1,1 @@
-Package { #name : #'Math-Matrix' }
+Package { #name : 'Math-Matrix' }
