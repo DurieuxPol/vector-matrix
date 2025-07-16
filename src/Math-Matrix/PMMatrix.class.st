@@ -474,9 +474,12 @@ PMMatrix >> determinant [
 { #category : 'accessing' }
 PMMatrix >> determinantWithRows: aCollectionOfIndices andColumns: anotherCollectionOfIndices [
 
-	^ (self
-		   submatrixWithRows: aCollectionOfIndices
-		   andColumns: anotherCollectionOfIndices) determinant
+	^ aCollectionOfIndices isEmpty | anotherCollectionOfIndices isEmpty
+		  ifTrue: [ 1 ]
+		  ifFalse: [
+			  (self
+				   submatrixWithRows: aCollectionOfIndices
+				   andColumns: anotherCollectionOfIndices) determinant ]
 ]
 
 { #category : 'accessing' }
@@ -504,6 +507,14 @@ PMMatrix >> elementwiseProductWithMatrix: aMatrix [
 	n := 0.
 	^ self class rows: ( aMatrix rowsCollect: [ :each | n := n + 1. each hadamardProduct: ( self rowAt: n)])
 
+]
+
+{ #category : 'double dispatching' }
+PMMatrix >> elementwiseProductWithVector: aVector [
+	"Answers the elementwise product between aMatrix and the receiver as a Vector."
+
+	^ self class rows:
+		  (self rowsCollect: [ :each | each hadamardProduct: aVector ])
 ]
 
 { #category : 'as yet unclassified' }
