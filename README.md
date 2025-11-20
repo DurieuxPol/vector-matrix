@@ -28,9 +28,7 @@ You can load all the packages into a fresh Pharo image by going to the Playgroun
     Metacello new
         baseline: 'MathVectorMatrix';
         repository: 'github://PolyMathOrg/vector-matrix/src';
-	onWarningLog;
-	onConflictUseIncoming;
-        load ]
+	load
 ```
 
 This should load the default version of the project (you can also specify another version or branch).
