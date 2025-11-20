@@ -18,7 +18,7 @@
 
 ## Description
 
-A project to manage the data structures of PolyMaths. It currently includes the Vector and Matrix Pharo implementation.
+A project to manage the data structures of PolyMath. It currently includes the Vector and Matrix Pharo implementation.
 
 ## Installation
 
