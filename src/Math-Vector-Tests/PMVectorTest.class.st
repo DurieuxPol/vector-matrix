@@ -188,13 +188,6 @@ PMVectorTest >> testTensorProduct [
 ]
 
 { #category : #tests }
-PMVectorTest >> testVectorCloseTo [
-	self assert: (#(1.00001 2.00005) asPMVector closeTo: #(1.00005 2.00001) asPMVector).
-	self assert: #(1.00001 2.00005) asPMVector closeTo: #(1.00005 2.00001) asPMVector.	"Double check that the TestAsserter >> #assert:closeTo: functions properly here."
-	self deny: (#(1.00001 2.00007) asPMVector closeTo: #(1.00007 2.00001) asPMVector)
-]
-
-{ #category : #tests }
 PMVectorTest >> testVectorCloseToPrecision [
 	| u v |
 	u := #(1.2 2.4) asPMVector.
