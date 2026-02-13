@@ -29,29 +29,30 @@ s := svd sForm.
 
 "
 Class {
-	#name : #PMSingularValueDecomposition,
-	#superclass : #Object,
+	#name : 'PMSingularValueDecomposition',
+	#superclass : 'Object',
 	#instVars : [
 		'diagonalSingularValueMatrix',
 		'leftSingularMatrix',
 		'rightSingularMatrix'
 	],
-	#category : #'Math-Matrix'
+	#category : 'Math-Matrix',
+	#package : 'Math-Matrix'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PMSingularValueDecomposition class >> decompose: aMatrix [
 	^ self new initialize: aMatrix
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PMSingularValueDecomposition >> diagonalSingularValueMatrix [
 	"Diagonal matrix S in A = USV decomposition. All elements are 0 except those on the main diagonal. The values on the diagonal are singular values of matrix A. By convention, they are sorted in descending order"
 
 	^ diagonalSingularValueMatrix
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PMSingularValueDecomposition >> initialize: aMatrix [
 
 	| m n symU symV eigenU eigenV diag |
@@ -72,7 +73,7 @@ PMSingularValueDecomposition >> initialize: aMatrix [
 	diagonalSingularValueMatrix setDiagonal: diag sqrt
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PMSingularValueDecomposition >> leftSingularForm [
 
 	self
@@ -82,14 +83,14 @@ PMSingularValueDecomposition >> leftSingularForm [
 	^ leftSingularMatrix
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PMSingularValueDecomposition >> leftSingularMatrix [
 	"Matrix U in the A = USV decomposition. The columns of this matrix are the eigenvectors of the A * (A transposed) matrix (called left singular vectors). The columns of this matrix are orthonormal"
 
 	^ leftSingularMatrix
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PMSingularValueDecomposition >> rightSingularForm [
 
 	self
@@ -99,14 +100,14 @@ PMSingularValueDecomposition >> rightSingularForm [
 	^ rightSingularMatrix
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PMSingularValueDecomposition >> rightSingularMatrix [
 	"Matrix V in the A = USV decomposition. The columns of this matrix are the eigenvectors of the (A transposed) * A matrix (called right singular vectors). The columns of this matrix are orthonormal"
 
 	^ rightSingularMatrix
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PMSingularValueDecomposition >> sForm [
 
 	self

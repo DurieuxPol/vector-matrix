@@ -11,8 +11,8 @@ eigenvectors := jacobi transform columnsCollect: [ :each | each].
 ```
 "
 Class {
-	#name : #PMJacobiTransformation,
-	#superclass : #Object,
+	#name : 'PMJacobiTransformation',
+	#superclass : 'Object',
 	#instVars : [
 		'precision',
 		'desiredPrecision',
@@ -21,22 +21,23 @@ Class {
 		'lowerRows',
 		'transform'
 	],
-	#category : #'Math-Matrix'
+	#category : 'Math-Matrix',
+	#package : 'Math-Matrix'
 }
 
-{ #category : #creation }
+{ #category : 'creation' }
 PMJacobiTransformation class >> matrix: aSymmetricMatrix [
 	^ super new initialize: aSymmetricMatrix
 ]
 
-{ #category : #creation }
+{ #category : 'creation' }
 PMJacobiTransformation class >> new [
 	"Prevent using this message to create instances."
 
 	^ self error: 'Illegal creation message for this class'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PMJacobiTransformation >> desiredPrecision: aNumber [
 	"Defines the desired precision for the result."
 
@@ -44,7 +45,7 @@ PMJacobiTransformation >> desiredPrecision: aNumber [
 	desiredPrecision := aNumber
 ]
 
-{ #category : #operation }
+{ #category : 'operation' }
 PMJacobiTransformation >> evaluate [
 	"Perform the iteration until either the desired precision is attained or the number of iterations exceeds the maximum."
 
@@ -58,7 +59,7 @@ PMJacobiTransformation >> evaluate [
 	^ result
 ]
 
-{ #category : #operation }
+{ #category : 'operation' }
 PMJacobiTransformation >> evaluateIteration [
 
 	| indices |
@@ -67,7 +68,7 @@ PMJacobiTransformation >> evaluateIteration [
 	^ precision
 ]
 
-{ #category : #transformation }
+{ #category : 'transformation' }
 PMJacobiTransformation >> exchangeAt: anInteger [
 	"Private"
 
@@ -82,7 +83,7 @@ PMJacobiTransformation >> exchangeAt: anInteger [
 		each at: anInteger put: temp ]
 ]
 
-{ #category : #operation }
+{ #category : 'operation' }
 PMJacobiTransformation >> finalizeIterations [
 	"Transfer the eigenValues into a vector and set this as the result.
 		 eigen values and transform matrix are sorted using a bubble sort."
@@ -95,13 +96,13 @@ PMJacobiTransformation >> finalizeIterations [
 	self sortEigenValues
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PMJacobiTransformation >> hasConverged [
 
 	^ precision <= desiredPrecision
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PMJacobiTransformation >> initialize [
 
 	super initialize.
@@ -109,7 +110,7 @@ PMJacobiTransformation >> initialize [
 	maximumIterations := 50
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PMJacobiTransformation >> initialize: aSymmetricMatrix [
 	"Private"
 
@@ -125,7 +126,7 @@ PMJacobiTransformation >> initialize: aSymmetricMatrix [
 				 yourself) ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PMJacobiTransformation >> largestOffDiagonalIndices [
 	"Private"
 
@@ -143,7 +144,7 @@ PMJacobiTransformation >> largestOffDiagonalIndices [
 	^ Array with: m with: n
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PMJacobiTransformation >> maximumIterations: anInteger [
 	"Defines the maximum number of iterations."
 
@@ -151,14 +152,14 @@ PMJacobiTransformation >> maximumIterations: anInteger [
 	maximumIterations := anInteger
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 PMJacobiTransformation >> printOn: aStream [
 	"Append to the argument aStream, a sequence of characters that describes the receiver."
 
 	lowerRows do: [ :each | each printOn: aStream ] separatedBy: [ aStream cr ]
 ]
 
-{ #category : #transformation }
+{ #category : 'transformation' }
 PMJacobiTransformation >> sortEigenValues [
 	"Private - Use a bubble sort."
 
@@ -175,13 +176,13 @@ PMJacobiTransformation >> sortEigenValues [
 		bound := m ]
 ]
 
-{ #category : #transformation }
+{ #category : 'transformation' }
 PMJacobiTransformation >> transform [
 
 	^ PMMatrix rows: transform
 ]
 
-{ #category : #transformation }
+{ #category : 'transformation' }
 PMJacobiTransformation >> transformAt: anInteger1 and: anInteger2 [
 	"Private"
 

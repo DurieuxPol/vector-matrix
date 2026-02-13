@@ -2,28 +2,29 @@
 I store eigenvalues and eigenvectors of a symmetric matrix computed with PMJacobiTransformation
 "
 Class {
-	#name : #PMJacobiTransformationHelper,
-	#superclass : #Object,
+	#name : 'PMJacobiTransformationHelper',
+	#superclass : 'Object',
 	#instVars : [
 		'eigenvalues',
 		'eigenvectors'
 	],
-	#category : #'Math-Matrix'
+	#category : 'Math-Matrix',
+	#package : 'Math-Matrix'
 }
 
-{ #category : #creation }
+{ #category : 'creation' }
 PMJacobiTransformationHelper class >> matrix: aSymmetricMatrix [
 	^ super new initialize: aSymmetricMatrix
 ]
 
-{ #category : #creation }
+{ #category : 'creation' }
 PMJacobiTransformationHelper class >> new [
 	"Prevent using this message to create instances."
 
 	^ self error: 'Illegal creation message for this class'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PMJacobiTransformationHelper >> initialize: aSymmetricMatrix [
 
 	| jacobi |
@@ -32,13 +33,13 @@ PMJacobiTransformationHelper >> initialize: aSymmetricMatrix [
 	eigenvectors := jacobi transform columnsCollect: [ :each | each].
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PMJacobiTransformationHelper >> values [
 
 	^ eigenvalues
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PMJacobiTransformationHelper >> vectors [
 
 	^ eigenvectors

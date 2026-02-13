@@ -1,6 +1,6 @@
-Extension { #name : #PMVector }
+Extension { #name : 'PMVector' }
 
-{ #category : #'*Math-Matrix' }
+{ #category : '*Math-Matrix' }
 PMVector >> productWithMatrix: aMatrix [
 
 	"Answers the product of aMatrix with the receiver."
@@ -8,7 +8,7 @@ PMVector >> productWithMatrix: aMatrix [
 	^ aMatrix rowsCollect: [ :each | each * self ]
 ]
 
-{ #category : #'*Math-Matrix' }
+{ #category : '*Math-Matrix' }
 PMVector >> reshapeWithDimensions: dimensionArray [
 
 	| computedRows rowNum colNum |
@@ -20,7 +20,7 @@ PMVector >> reshapeWithDimensions: dimensionArray [
 	^ PMMatrix rows: computedRows
 ]
 
-{ #category : #'*Math-Matrix' }
+{ #category : '*Math-Matrix' }
 PMVector >> tensorProduct: aVector [
 	"Answers the tensor product of the receiver with aVector."
 	^self == aVector "dont use #="
