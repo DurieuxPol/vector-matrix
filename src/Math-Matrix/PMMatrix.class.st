@@ -198,7 +198,7 @@ PMMatrix >> - aMatrix [
 PMMatrix >> -= aColumn [
 	"Assume a collection is a matrix of one row"
 
-	self columnWiseSubstractionWith: aColumn
+	self rowWiseSubstractionWith: aColumn
 ]
 
 { #category : 'operation' }
@@ -436,20 +436,6 @@ PMMatrix >> columnAverage [
 PMMatrix >> columnVectorAt: col size: dimension [
 
 	^ (self columnAt: col) copyFrom: col to: dimension 
-]
-
-{ #category : 'operating' }
-PMMatrix >> columnWiseSubstractionWith: aColumn [
-	"Assume a collection is a matrix of one row"
-
-	| result |
-	result := self class rows: self numberOfRows columns: self numberOfColumns.
-
-	1 to: self numberOfColumns do: [ :col |
-			| me |
-			me := self atColumn: col.
-			result atColumn: col put: me - (aColumn at: col) ].
-	^ result
 ]
 
 { #category : 'iterators' }
@@ -909,6 +895,20 @@ PMMatrix >> rowAt: aRowIndex columnAt: aColumnIndex [
 PMMatrix >> rowAt: aRowIndex columnAt: aColumnIndex put: aValue [
 	
 	^(rows at: aRowIndex) at: aColumnIndex put: aValue
+]
+
+{ #category : 'operating' }
+PMMatrix >> rowWiseSubstractionWith: aRow [
+	"Assume a collection is a matrix of one row"
+
+	| result |
+	result := self class rows: self numberOfRows columns: self numberOfColumns.
+
+	1 to: self numberOfColumns do: [ :col |
+			| me |
+			me := self atColumn: col.
+			result atColumn: col put: me - (aRow at: col) ].
+	^ result
 ]
 
 { #category : 'cell accessing' }
