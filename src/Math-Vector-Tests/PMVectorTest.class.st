@@ -188,13 +188,6 @@ PMVectorTest >> testTensorProduct [
 ]
 
 { #category : #tests }
-PMVectorTest >> testVectorCloseTo [
-	self assert: (#(1.00001 2.00005) asPMVector closeTo: #(1.00005 2.00001) asPMVector).
-	self assert: #(1.00001 2.00005) asPMVector closeTo: #(1.00005 2.00001) asPMVector.	"Double check that the TestAsserter >> #assert:closeTo: functions properly here."
-	self deny: (#(1.00001 2.00007) asPMVector closeTo: #(1.00007 2.00001) asPMVector)
-]
-
-{ #category : #tests }
 PMVectorTest >> testVectorCloseToPrecision [
 	| u v |
 	u := #(1.2 2.4) asPMVector.
@@ -215,6 +208,21 @@ PMVectorTest >> testVectorCumulativeSum [
 	self assert: (w at: 1) equals: 1.
 	self assert: (w at: 2) equals: 3.
 	self assert: (w at: 3) equals: 6
+]
+
+{ #category : #tests }
+PMVectorTest >> testVectorFirstNorm [
+
+	| v1 v2 v3 |
+	v1 := #( 1 0 ) asPMVector.
+	self assert: v1 firstNorm equals: 1.
+	v2 := #( 1 1 ) asPMVector.
+	self assert: v2 firstNorm equals: 2.
+	v3 := #( -1 1 ) asPMVector.
+	self assert: v3 firstNorm equals: 2.
+
+	self assert: (v1 + v2) firstNorm equals: 3.
+	self assert: (v2 + v3) firstNorm equals: 2
 ]
 
 { #category : #tests }

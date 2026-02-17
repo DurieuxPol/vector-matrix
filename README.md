@@ -1,5 +1,5 @@
 <p align="center"><img alt="PolyMath" src="https://raw.githubusercontent.com/PolyMathOrg/PolyMath/master/assets/logos/logo.png" style="width: 25%; height: 25%">
-<h1 align="center">[Vector Matrix]</h1>
+<h1 align="center">[PolyMath: Vector Matrix]</h1>
   <p align="center">
     Scientific Computing with Pharo
     <br>
@@ -18,7 +18,7 @@
 
 ## Description
 
-A project to manage the data structures of PolyMaths. It currently includes the Vector and Matrix Pharo implementation.
+A project to manage the data structures of PolyMath. It currently includes the Vector and Matrix Pharo implementation.
 
 ## Installation
 
@@ -28,9 +28,7 @@ You can load all the packages into a fresh Pharo image by going to the Playgroun
     Metacello new
         baseline: 'MathVectorMatrix';
         repository: 'github://PolyMathOrg/vector-matrix/src';
-	onWarningLog;
-	onConflictUseIncoming;
-        load ]
+	load
 ```
 
 This should load the default version of the project (you can also specify another version or branch).
