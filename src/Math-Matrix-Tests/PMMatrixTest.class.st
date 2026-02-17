@@ -765,7 +765,8 @@ PMMatrixTest >> testRowWiseSubstractionWith [
 	vector := #( 1 2 3 ) asPMVector.
 	expected := PMMatrix rows: #( #( 0 0 0 ) #( 4 4 4 ) ).
 
-	self assert: (matrix rowWiseSubstractionWith: vector) equals: expected
+	self assert: (matrix rowWiseSubstractionWith: vector) equals: expected.
+	self assert: matrix -= vector equals: expected
 ]
 
 { #category : 'comparing' }
