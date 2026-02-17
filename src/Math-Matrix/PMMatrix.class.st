@@ -198,7 +198,7 @@ PMMatrix >> - aMatrix [
 PMMatrix >> -= aRow [
 	"Assume a collection is a matrix of one row"
 
-	self rowWiseSubstractionWith: aRow
+	^ self rowWiseSubstractionWith: aRow
 ]
 
 { #category : 'operation' }
