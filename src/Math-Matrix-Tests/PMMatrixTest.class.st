@@ -148,17 +148,6 @@ PMMatrixTest >> testColumnAverage [
 	self assert: matrix columnAverage equals: #( 3 4 5 )
 ]
 
-{ #category : 'tests' }
-PMMatrixTest >> testColumnWiseSubstractionWith [
-
-	| matrix vector expected |
-	matrix := PMMatrix rows: #( #( 1 2 3 ) #( 5 6 7 ) ).
-	vector := #( 1 2 3 ) asPMVector.
-	expected := PMMatrix rows: #( #( 0 0 0 ) #( 4 4 4 ) ).
-
-	self assert: (matrix columnWiseSubstractionWith: vector) equals: expected
-]
-
 { #category : 'linear algebra' }
 PMMatrixTest >> testDeterminant [
 	| m |
@@ -766,6 +755,17 @@ PMMatrixTest >> testRaisedToZero [
 	
 	expected := PMMatrix rows: #( #(1 0) #(0 1)).
 	self assert: aPMMatrix equals: expected.
+]
+
+{ #category : 'tests' }
+PMMatrixTest >> testRowWiseSubstractionWith [
+
+	| matrix vector expected |
+	matrix := PMMatrix rows: #( #( 1 2 3 ) #( 5 6 7 ) ).
+	vector := #( 1 2 3 ) asPMVector.
+	expected := PMMatrix rows: #( #( 0 0 0 ) #( 4 4 4 ) ).
+
+	self assert: (matrix rowWiseSubstractionWith: vector) equals: expected
 ]
 
 { #category : 'comparing' }
