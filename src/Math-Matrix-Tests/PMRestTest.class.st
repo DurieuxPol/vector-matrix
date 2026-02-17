@@ -1,10 +1,11 @@
 Class {
-	#name : #PMRestTest,
-	#superclass : #TestCase,
-	#category : #'Math-Matrix-Tests'
+	#name : 'PMRestTest',
+	#superclass : 'TestCase',
+	#category : 'Math-Matrix-Tests',
+	#package : 'Math-Matrix-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMRestTest >> testEqualsTo [
 
 	| a b |
@@ -19,7 +20,7 @@ PMRestTest >> testEqualsTo [
 	self deny: (a closeTo: b)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMRestTest >> testNewRandom [
 
 	| a |
@@ -27,7 +28,7 @@ PMRestTest >> testNewRandom [
 	self assert: a isSymmetric
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMRestTest >> testSwapColumnWithColumn [
 	| a |
 	a := PMMatrix new initializeRows: #(#(5 40 1) #(3 0 1) #(2 7 1)).

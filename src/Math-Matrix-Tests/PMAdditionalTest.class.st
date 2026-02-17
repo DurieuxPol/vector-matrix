@@ -3,12 +3,13 @@ here are tests that would be in Math-Tests-DHB-Numerical, if it could construct 
 
 "
 Class {
-	#name : #PMAdditionalTest,
-	#superclass : #TestCase,
-	#category : #'Math-Matrix-Tests'
+	#name : 'PMAdditionalTest',
+	#superclass : 'TestCase',
+	#category : 'Math-Matrix-Tests',
+	#package : 'Math-Matrix-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMAdditionalTest >> testMatrixInversionSmall [
 	"it is here since it uses random matrices"
 
@@ -38,7 +39,7 @@ PMAdditionalTest >> testMatrixInversionSmall [
 		self assert: i class equals: PMMatrix ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMAdditionalTest >> testMatrixSquared [
 	"this tests squared and is not in Math-Tests-Numerical since it uses random matrices"
 
@@ -53,7 +54,7 @@ PMAdditionalTest >> testMatrixSquared [
 	self assert: a squared class equals: PMSymmetricMatrix
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMAdditionalTest >> testTensorProduct [
 	"this tests if a tensor product of two vectors is calculated correctly"
 
