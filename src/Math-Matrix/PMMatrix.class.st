@@ -198,7 +198,7 @@ PMMatrix >> - aMatrix [
 PMMatrix >> -= aRow [
 	"Assume a collection is a matrix of one row"
 
-	^ self rowWiseSubstractionWith: aRow
+	self rowWiseSubstractionWith: aRow
 ]
 
 { #category : 'operation' }
@@ -901,14 +901,10 @@ PMMatrix >> rowAt: aRowIndex columnAt: aColumnIndex put: aValue [
 PMMatrix >> rowWiseSubstractionWith: aRow [
 	"Assume a collection is a matrix of one row"
 
-	| result |
-	result := self class rows: self numberOfRows columns: self numberOfColumns.
-
 	1 to: self numberOfColumns do: [ :col |
 			| me |
 			me := self atColumn: col.
-			result atColumn: col put: me - (aRow at: col) ].
-	^ result
+			self atColumn: col put: me - (aRow at: col) ].
 ]
 
 { #category : 'cell accessing' }
