@@ -352,7 +352,7 @@ PMMatrixTest >> testMatrixAddSizeMismatch [
 	self should: [ b transpose + a ] raise: SizeMismatch
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PMMatrixTest >> testMatrixCloseToPrecision [
 	| a b |
 	a := PMMatrix rows: #(#(1.2 2.4) #(1.2 2.4)).
@@ -679,6 +679,17 @@ PMMatrixTest >> testMinorsOfSquareMatrix [
 ]
 
 { #category : 'tests' }
+PMMatrixTest >> testMinusEquals [
+
+	| matrix vector expected |
+	matrix := PMMatrix rows: #( #( 1 2 3 ) #( 5 6 7 ) ).
+	vector := #( 1 2 3 ) asPMVector.
+	expected := PMMatrix rows: #( #( 0 0 0 ) #( 4 4 4 ) ).
+
+	self assert: matrix -= vector equals: expected
+]
+
+{ #category : 'tests' }
 PMMatrixTest >> testOnesMatrix [
 	| a |
 	a := PMMatrix onesRows: 2 cols: 3.
@@ -758,8 +769,7 @@ PMMatrixTest >> testRowWiseSubstractionWith [
 	vector := #( 1 2 3 ) asPMVector.
 	expected := PMMatrix rows: #( #( 0 0 0 ) #( 4 4 4 ) ).
 
-	self assert: (matrix rowWiseSubstractionWith: vector) equals: expected.
-	self assert: matrix -= vector equals: expected
+	self assert: (matrix rowWiseSubstractionWith: vector) equals: expected
 ]
 
 { #category : 'comparing' }
