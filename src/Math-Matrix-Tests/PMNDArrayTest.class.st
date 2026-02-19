@@ -1,10 +1,11 @@
 Class {
-	#name : #PMNDArrayTest,
-	#superclass : #TestCase,
-	#category : #'Math-Matrix-Tests'
+	#name : 'PMNDArrayTest',
+	#superclass : 'TestCase',
+	#category : 'Math-Matrix-Tests',
+	#package : 'Math-Matrix-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMNDArrayTest >> testArray [
 
 	| t1 t2 |
@@ -18,7 +19,7 @@ PMNDArrayTest >> testArray [
 		equals: #( 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 )
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMNDArrayTest >> testAt [
 
 	| t1 t2 |
@@ -32,7 +33,7 @@ PMNDArrayTest >> testAt [
 	self should:[t1 at: #( 4 4 )] raise:Error
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMNDArrayTest >> testAtPut [
 
 	| t1 t2 |
@@ -48,7 +49,7 @@ PMNDArrayTest >> testAtPut [
 	self assert: (t2 at: #( 2 2 1 )) equals: 10
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMNDArrayTest >> testCreateScalarNDArray [
 
 	| s |
@@ -62,7 +63,7 @@ PMNDArrayTest >> testCreateScalarNDArray [
 	self assert: s size equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMNDArrayTest >> testFirst [
 
 	| a b |
@@ -72,7 +73,7 @@ PMNDArrayTest >> testFirst [
 	self assert: b first equals: #( 1 1 )
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMNDArrayTest >> testFlattenedIndexOf [
 
 	| t1 t2 |
@@ -84,7 +85,7 @@ PMNDArrayTest >> testFlattenedIndexOf [
 	self assert: (t2 flattenedIndexOf: #( 1 2 2 )) equals: 4
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMNDArrayTest >> testFromNestedArray [
 
 	| t1 t2 |
@@ -100,7 +101,7 @@ PMNDArrayTest >> testFromNestedArray [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMNDArrayTest >> testHadamardProduct [
 |t1 t2 expectedHadamardProduct|
 
@@ -144,7 +145,7 @@ self assert: (t1 hadamardProduct: t2) equals: expectedHadamardProduct
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMNDArrayTest >> testHadamardProductWithDifferentShapesFails [
 |t1 t2|
  t1 := PMNDArray fromNestedArray: #( #( 1 2) #(3 4) #(5 6) #(7 8)).
@@ -152,7 +153,7 @@ PMNDArrayTest >> testHadamardProductWithDifferentShapesFails [
  self should: [t1 hadamardProduct: t2] raise: ShapeMismatch 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMNDArrayTest >> testRank [
 
 	| t1 t2 |
@@ -165,7 +166,7 @@ PMNDArrayTest >> testRank [
 	self assert: t2 rank equals: 3
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMNDArrayTest >> testReshape [
 
 	| t t1 |
@@ -177,7 +178,7 @@ PMNDArrayTest >> testReshape [
 	self assert: t1 asArray  == t asArray equals: true
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMNDArrayTest >> testShape [
 
 	| t1 t2 |
@@ -192,7 +193,7 @@ PMNDArrayTest >> testShape [
 	self assert: t2 shape equals: #( 4 2 2 )
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMNDArrayTest >> testSize [
 
 	| t1 t2 |
@@ -204,7 +205,7 @@ PMNDArrayTest >> testSize [
 	self assert: t2 size equals: 16
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMNDArrayTest >> testStrides [
 
 	| a b |
@@ -223,7 +224,7 @@ PMNDArrayTest >> testStrides [
 	self assert: (b flattenedIndexOf: #( 2 2 3 )) equals: 19
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMNDArrayTest >> testView [
 
 	| t t1 |

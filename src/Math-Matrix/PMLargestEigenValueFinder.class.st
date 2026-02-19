@@ -14,8 +14,8 @@ nextEigenvector := nextFinder eigenvector.
 ```
 "
 Class {
-	#name : #PMLargestEigenValueFinder,
-	#superclass : #Object,
+	#name : 'PMLargestEigenValueFinder',
+	#superclass : 'Object',
 	#instVars : [
 		'precision',
 		'desiredPrecision',
@@ -25,16 +25,17 @@ Class {
 		'eigenvector',
 		'transposeEigenvector'
 	],
-	#category : #'Math-Matrix'
+	#category : 'Math-Matrix',
+	#package : 'Math-Matrix'
 }
 
-{ #category : #information }
+{ #category : 'information' }
 PMLargestEigenValueFinder class >> defaultPrecision [
 	"Private - Answers the default precision for newly created instances."
 	^PMFloatingPointMachine new defaultNumericalPrecision
 ]
 
-{ #category : #creation }
+{ #category : 'creation' }
 PMLargestEigenValueFinder class >> matrix: aMatrix [
 	"Create a new instance of the receiver for a given matrix and default precision."
 
@@ -43,7 +44,7 @@ PMLargestEigenValueFinder class >> matrix: aMatrix [
 		yourself
 ]
 
-{ #category : #creation }
+{ #category : 'creation' }
 PMLargestEigenValueFinder class >> matrix: aMatrix precision: aNumber [
 	"Create a new instance of the receiver for a given matrix and desired precision."
 
@@ -53,7 +54,7 @@ PMLargestEigenValueFinder class >> matrix: aMatrix precision: aNumber [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PMLargestEigenValueFinder >> desiredPrecision: aNumber [
 	"Defines the desired precision for the result."
 
@@ -61,21 +62,21 @@ PMLargestEigenValueFinder >> desiredPrecision: aNumber [
 	desiredPrecision := aNumber
 ]
 
-{ #category : #information }
+{ #category : 'information' }
 PMLargestEigenValueFinder >> eigenvalue [
 	"Answer the eigen value found by the receiver."
 
 	^ result
 ]
 
-{ #category : #information }
+{ #category : 'information' }
 PMLargestEigenValueFinder >> eigenvector [
 	"Answer the normalized eigen vector found by the receiver."
 
 	^ eigenvector * (1 / eigenvector norm)
 ]
 
-{ #category : #operation }
+{ #category : 'operation' }
 PMLargestEigenValueFinder >> evaluate [
 	"Perform the iteration until either the desired precision is attained or the number of iterations exceeds the maximum."
 
@@ -91,7 +92,7 @@ PMLargestEigenValueFinder >> evaluate [
 	^ result
 ]
 
-{ #category : #operation }
+{ #category : 'operation' }
 PMLargestEigenValueFinder >> evaluateIteration [
 	"Iterate the product of the matrix of the eigen vector and the transpose."
 
@@ -107,13 +108,13 @@ PMLargestEigenValueFinder >> evaluateIteration [
 		  ifNotNil: [ (result - oldEigenvalue) abs ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PMLargestEigenValueFinder >> hasConverged [
 
 	^ precision <= desiredPrecision
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PMLargestEigenValueFinder >> initialize [
 
 	super initialize.
@@ -121,14 +122,14 @@ PMLargestEigenValueFinder >> initialize [
 	maximumIterations := 100
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PMLargestEigenValueFinder >> initialize: aMatrix [
 	"Defines the matrix for the receiver."
 
 	matrix := aMatrix
 ]
 
-{ #category : #operation }
+{ #category : 'operation' }
 PMLargestEigenValueFinder >> initializeIterations [
 	"Initialize the iterations (subclasses must write their own method and call this one last)."
 
@@ -138,7 +139,7 @@ PMLargestEigenValueFinder >> initializeIterations [
 	transposeEigenvector atAllPut: 1.0
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PMLargestEigenValueFinder >> maximumIterations: anInteger [
 	"Defines the maximum number of iterations."
 
@@ -146,7 +147,7 @@ PMLargestEigenValueFinder >> maximumIterations: anInteger [
 	maximumIterations := anInteger
 ]
 
-{ #category : #creation }
+{ #category : 'creation' }
 PMLargestEigenValueFinder >> nextLargestEigenValueFinder [
 	"Return an eigen value finder for the same eigen values of the receiver except the one found."
 

@@ -1,10 +1,11 @@
 Class {
-	#name : #PMMatrixTest,
-	#superclass : #TestCase,
-	#category : #'Math-Matrix-Tests'
+	#name : 'PMMatrixTest',
+	#superclass : 'TestCase',
+	#category : 'Math-Matrix-Tests',
+	#package : 'Math-Matrix-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testArgMaxOnColumns [
 	| m1 m2 |
 	m1 := PMMatrix rows: #(#(0 1 2) #(3 4 5)).
@@ -13,7 +14,7 @@ PMMatrixTest >> testArgMaxOnColumns [
 	self assert: m2 argMaxOnColumns equals: #(1 1 2) asPMVector
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testArgMaxOnRows [
 	| m1 m2 |
 	m1 := PMMatrix rows: #(#(0 1 2) #(3 4 5)).
@@ -22,7 +23,7 @@ PMMatrixTest >> testArgMaxOnRows [
 	self assert: m2 argMaxOnRows equals: #(2 2) asPMVector.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testAtAllPut [
 
 	| a |
@@ -32,7 +33,7 @@ PMMatrixTest >> testAtAllPut [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testAtColumnPutRepeat [
 
 	| a |
@@ -48,7 +49,7 @@ PMMatrixTest >> testAtColumnPutRepeat [
 	self assert: a equals: (PMMatrix rows: #(#(1 nil nil) #(1 nil nil) #(nil nil nil))).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testAtRow [
 
 	| a |
@@ -58,7 +59,7 @@ PMMatrixTest >> testAtRow [
 	self assert: (a atRow: 1) equals: (#(1 2 3) asPMVector).	
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testAtRowPutAtColumnPut [
 	| a |
 	a := PMMatrix rows: #(#(11 12 13) #(21 22 23)).
@@ -71,7 +72,7 @@ PMMatrixTest >> testAtRowPutAtColumnPut [
 	self should: [ a atColumn: 1 put: (a rowAt: 2) ] raise: Error
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testCholeskyDecomposition [
 	| matrix upperTriangular expected |
 	
@@ -94,7 +95,7 @@ PMMatrixTest >> testCholeskyDecomposition [
 	self assert: upperTriangular equals: expected.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testCholeskyDecompositionIsDecomposition [
 	| matrix upperTriangular |
 	
@@ -110,7 +111,7 @@ PMMatrixTest >> testCholeskyDecompositionIsDecomposition [
 		closeTo: matrix.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testCholeskyDecompositionNonSquare [
 	| matrix |
 	
@@ -121,7 +122,7 @@ PMMatrixTest >> testCholeskyDecompositionNonSquare [
 	self should: [ matrix choleskyDecomposition ] raise: Error.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testCholeskyDecompositionNonSymmetric [
 	| matrix |
 	
@@ -133,19 +134,28 @@ PMMatrixTest >> testCholeskyDecompositionNonSymmetric [
 	self should: [ matrix choleskyDecomposition ] raise: Error.
 ]
 
-{ #category : #collection }
+{ #category : 'collection' }
 PMMatrixTest >> testCollect [
 	self assert: ((PMMatrix rows: #((1 2) (3 4))) collect: [ :x | 2 * x ]) equals: (PMMatrix rows: #((2 4) ( 6 8)))
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'tests' }
+PMMatrixTest >> testColumnAverage [
+
+	| matrix |
+	matrix := PMMatrix rows: #( #( 1 2 3 ) #( 5 6 7 ) ).
+
+	self assert: matrix columnAverage equals: #( 3 4 5 )
+]
+
+{ #category : 'linear algebra' }
 PMMatrixTest >> testDeterminant [
 	| m |
 	m := PMMatrix rows: #(#(3 2 4) #(2 -5 -1) #(1 -2 2)).
 	self assert: m determinant equals: -42
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testDimension [
 	| a | 
 	a := PMMatrix rows: #( ( 1 0 1) (-1 -2 3)).	
@@ -153,7 +163,7 @@ PMMatrixTest >> testDimension [
 	
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testEigenvalues [
 	"Code Example 8.15"
 
@@ -175,7 +185,7 @@ PMMatrixTest >> testEigenvalues [
 		self assert: actual closeTo: expected ].
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testEigenvaluesLargest [
 	"Code Example 8.13"
 
@@ -200,21 +210,21 @@ PMMatrixTest >> testEigenvaluesLargest [
 	self assert: secondEigenvalue closeTo: expectedEigenvalues second.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testFlattenColumns [
 	| m |
 	m := PMMatrix rows: #(#(1 2 3) #(4 5 6) #(7 8 9)).
 	self assert: m flattenColumns equals: #(1 4 7 2 5 8 3 6 9) asPMVector
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testFlattenRows [
 	| m |
 	m := PMMatrix rows: #(#(1 2 3) #(4 5 6) #(7 8 9)).
 	self assert: m flattenRows equals: #(1 2 3 4 5 6 7 8 9) asPMVector
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testIdentityMatrix [
 	|expectedIdentityMatrix identityMatrix|
 
@@ -228,7 +238,7 @@ PMMatrixTest >> testIdentityMatrix [
 	self assert: identityMatrix equals: expectedIdentityMatrix.
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testInversePureCRLSingularMatrixError [
 
 	self
@@ -236,7 +246,7 @@ PMMatrixTest >> testInversePureCRLSingularMatrixError [
 		raise: PMSingularMatrixError.
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testInversePureLUPSingularMatrixError [
 
 	self
@@ -244,7 +254,7 @@ PMMatrixTest >> testInversePureLUPSingularMatrixError [
 		raise: PMSingularMatrixError.
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testInverseSingularMatrixError [
 
 	self
@@ -252,7 +262,7 @@ PMMatrixTest >> testInverseSingularMatrixError [
 		raise: PMSingularMatrixError.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testLUPDecomposition [
 	"Code Example 8.10"
 
@@ -270,7 +280,7 @@ PMMatrixTest >> testLUPDecomposition [
 	self assert: (sol2 at: 3) equals: 2
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testLinearEquations [
 	"Code Example 8.6"
 
@@ -290,7 +300,7 @@ PMMatrixTest >> testLinearEquations [
 	self assert: (sol2 at: 3) equals: 2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testLinearEquationsSingle [
 
 	| s sol |
@@ -304,7 +314,7 @@ PMMatrixTest >> testLinearEquationsSingle [
 	self assert: ((sol at: 3) closeTo: 3.0)
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testLinearEquationsSingular [
 	| s sol |
 	s := PMLinearEquationSystem
@@ -314,7 +324,7 @@ PMMatrixTest >> testLinearEquationsSingular [
 	self assert: sol isNil
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testMatrixAdd [
 	| a b c |
 	a := PMMatrix rows: #(#(1 0 1) #(-1 -2 3)).
@@ -330,7 +340,7 @@ PMMatrixTest >> testMatrixAdd [
 	self assert: ((c rowAt: 2) at: 3) equals: 10
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testMatrixAddSizeMismatch [
 	| a b |
 	"Matrices of different dimensions should signal SizeMismatch on #+."
@@ -342,7 +352,7 @@ PMMatrixTest >> testMatrixAddSizeMismatch [
 	self should: [ b transpose + a ] raise: SizeMismatch
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PMMatrixTest >> testMatrixCloseToPrecision [
 	| a b |
 	a := PMMatrix rows: #(#(1.2 2.4) #(1.2 2.4)).
@@ -352,7 +362,7 @@ PMMatrixTest >> testMatrixCloseToPrecision [
 	self deny: (a closeTo: b precision: 0.2)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testMatrixConversionWithBothDims [
 
 	| vect result expected |
@@ -364,14 +374,14 @@ PMMatrixTest >> testMatrixConversionWithBothDims [
 	self assert: result equals: expected
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PMMatrixTest >> testMatrixCos [
 	| a |
 	a := PMMatrix rows: (Array with: (Array with: Float pi with: Float pi) with: #(0 0)).
 	self assert: a cos equals: (PMMatrix rows:#((-1 -1) (1 1)))
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testMatrixCumulativeSum [
 	| a b |
 	a := PMMatrix rows: #(#(1 0 1) #(-1 -2 3)).
@@ -386,7 +396,7 @@ PMMatrixTest >> testMatrixCumulativeSum [
 	self assert: ((b rowAt: 2) at: 3) equals: 0
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testMatrixDo [
 	| a |
 	a := PMMatrix rows: #(#(1 2 3) #(1 2 3) #(1 2 3)).
@@ -396,7 +406,7 @@ PMMatrixTest >> testMatrixDo [
 	self assert: (a rowAt: 1) equals: #(2 3 3) asPMVector
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testMatrixElementwiseAdd [
 	| a b |
 	a := PMMatrix rows: #(#(1 2) #(3 4)).
@@ -409,7 +419,7 @@ PMMatrixTest >> testMatrixElementwiseAdd [
 	self assert: b + -1 equals: a.
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testMatrixEquality [
 	| a c |
 	a := PMMatrix rows: #(#(1 0 1) #(-1 -2 3)).
@@ -419,7 +429,7 @@ PMMatrixTest >> testMatrixEquality [
 	self assert: (c = a and: [ a = c ])
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testMatrixExtensions [
 	"testing at:at: and at:at:put:"
 
@@ -431,7 +441,7 @@ PMMatrixTest >> testMatrixExtensions [
 	self shouldnt: [ (c at: 1 at: 1) = (a at: 1 at: 1) ]
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testMatrixExtensionsAtColumn [
 	"testing at:at: and at:at:put:"
 
@@ -449,7 +459,7 @@ PMMatrixTest >> testMatrixExtensionsAtColumn [
 	self shouldnt: [ (c at: 1 at: 1) = (a at: 1 at: 1) ]
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testMatrixExtensionsAtRow [
 	"testing at:at: and at:at:put:"
 
@@ -466,7 +476,7 @@ PMMatrixTest >> testMatrixExtensionsAtRow [
 	self shouldnt: [ (c at: 1 at: 2) = (a at: 1 at: 2) ]
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PMMatrixTest >> testMatrixGreater [
 	| a b |
 	a := PMMatrix rows: #(#(1 -1 2) #(-4 0 1)).
@@ -481,7 +491,7 @@ PMMatrixTest >> testMatrixGreater [
 	self assert: ((b rowAt: 2) at: 3) equals: true
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testMatrixHadamardProduct [
 	| a b c |
 	a := PMMatrix rows: #(#(1 0 1) #(-1 -2 3)).
@@ -497,7 +507,7 @@ PMMatrixTest >> testMatrixHadamardProduct [
 	self assert: ((c rowAt: 2) at: 3) equals: 21
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PMMatrixTest >> testMatrixHash [
 	| a b c |
 	a := PMMatrix rows: #(#(1 0) #(0 1)).
@@ -507,7 +517,7 @@ PMMatrixTest >> testMatrixHash [
 	self shouldnt: [ a hash = c hash ]
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testMatrixInitializationWithNegativeDimensions [
 	
 	" matrices with negative dimension and zero dimension should not be allowed."
@@ -515,7 +525,7 @@ PMMatrixTest >> testMatrixInitializationWithNegativeDimensions [
 	self should: [ PMMatrix rows: 0 columns: 4 ] raise: AssertionFailure.
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testMatrixInitializeSquare [
 	| aPMMatrix |
 	aPMMatrix := PMMatrix new initializeSquare: 2.
@@ -524,7 +534,7 @@ PMMatrixTest >> testMatrixInitializeSquare [
 
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testMatrixInversionSmall [
 	| m c |
 	m := PMMatrix rows: #(#(3 2 4) #(2 -5 -1) #(1 -2 2)).
@@ -542,7 +552,7 @@ PMMatrixTest >> testMatrixInversionSmall [
 	self assert: ((c rowAt: 3) at: 3) equals: 1
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PMMatrixTest >> testMatrixLess [
 	| a b |
 	a := PMMatrix rows: #(#(1 -1 2) #(-4 0 1)).
@@ -557,7 +567,7 @@ PMMatrixTest >> testMatrixLess [
 	self assert: ((b rowAt: 2) at: 3) equals: false
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testMatrixMultiply [
 	"Code Example 8.1"
 
@@ -575,7 +585,7 @@ PMMatrixTest >> testMatrixMultiply [
 	self assert: ((c rowAt: 2) at: 3) equals: 4
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testMatrixNew [
 	| aPMMatrix |
 	aPMMatrix  := PMMatrix new: 3.
@@ -584,21 +594,21 @@ PMMatrixTest >> testMatrixNew [
 
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testMatrixPrincipalDiagonal [
 	| a |
 	a := PMMatrix rows: #(#(1 2 3) #(4 5 6) #(7 8 9)).
 	self assert: a principalDiagonal equals: #(1 5 9) asPMVector.
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PMMatrixTest >> testMatrixSign [
 	| a |
 	a := PMMatrix rows: #(#(-2 2 0) #(2 0 -2)).
 	self assert: a sign equals: (PMMatrix rows: #((-1 1 0) (1 0 -1)))
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testMatrixSubtract [
 	| a b c |
 	a := PMMatrix rows: #(#(1 0 1) #(-1 -2 3)).
@@ -614,7 +624,7 @@ PMMatrixTest >> testMatrixSubtract [
 	self assert: ((c rowAt: 2) at: 3) equals: -4
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testMatrixSum [
 	"Code Example 8.1"
 
@@ -626,14 +636,14 @@ PMMatrixTest >> testMatrixSum [
 	self assert: (v at: 2) equals: 0
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testMatrixTrace [
 	| a |
 	a := PMMatrix rows: #(#(1 2 3) #(4 5 6) #(7 8 9)).
 	self assert: a tr equals: 15
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testMinorsOfNonSquareMatrix [
 
 	| matrix expected |
@@ -649,7 +659,7 @@ PMMatrixTest >> testMinorsOfNonSquareMatrix [
 	self assert: (matrix minor: 1 and: 1) equals: expected
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testMinorsOfSquareMatrix [
 
 	| matrix expected |
@@ -668,7 +678,18 @@ PMMatrixTest >> testMinorsOfSquareMatrix [
 		equals: (PMMatrix rows: { { 1 } })
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
+PMMatrixTest >> testMinusEquals [
+
+	| matrix vector expected |
+	matrix := PMMatrix rows: #( #( 1 2 3 ) #( 5 6 7 ) ).
+	vector := #( 1 2 3 ) asPMVector.
+	expected := PMMatrix rows: #( #( 0 0 0 ) #( 4 4 4 ) ).
+
+	self assert: matrix -= vector equals: expected
+]
+
+{ #category : 'tests' }
 PMMatrixTest >> testOnesMatrix [
 	| a |
 	a := PMMatrix onesRows: 2 cols: 3.
@@ -682,7 +703,7 @@ PMMatrixTest >> testOnesMatrix [
 	self assert: ((a rowAt: 2) at: 3) equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testPrintOn [
 	| m stream |
 	stream := String new writeStream.
@@ -690,7 +711,7 @@ PMMatrixTest >> testPrintOn [
 	m printOn: stream
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testRaisedToNegativeInteger [  
 
 	|aPMMatrix expected|
@@ -703,7 +724,7 @@ PMMatrixTest >> testRaisedToNegativeInteger [
 	self assert: aPMMatrix equals: expected.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testRaisedToNonSquareMatrix [
 
 	|aPMMatrix|
@@ -714,7 +735,7 @@ PMMatrixTest >> testRaisedToNonSquareMatrix [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testRaisedToPositiveInteger [ 
 
 	|aPMMatrix expected|
@@ -727,7 +748,7 @@ PMMatrixTest >> testRaisedToPositiveInteger [
 	self assert: aPMMatrix equals: expected.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testRaisedToZero [
 
 	|aPMMatrix expected|
@@ -740,7 +761,18 @@ PMMatrixTest >> testRaisedToZero [
 	self assert: aPMMatrix equals: expected.
 ]
 
-{ #category : #comparing }
+{ #category : 'tests' }
+PMMatrixTest >> testRowWiseSubstractionWith [
+
+	| matrix vector expected |
+	matrix := PMMatrix rows: #( #( 1 2 3 ) #( 5 6 7 ) ).
+	vector := #( 1 2 3 ) asPMVector.
+	expected := PMMatrix rows: #( #( 0 0 0 ) #( 4 4 4 ) ).
+
+	self assert: (matrix rowWiseSubstractionWith: vector) equals: expected
+]
+
+{ #category : 'comparing' }
 PMMatrixTest >> testRowsColumns [
 	| a |
 	
@@ -748,7 +780,7 @@ PMMatrixTest >> testRowsColumns [
 	self assert: a dimension equals: 3 @ 4.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testRowsColumnsElement [
 
 	| a |
@@ -759,7 +791,7 @@ PMMatrixTest >> testRowsColumnsElement [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testSimpleMatrixOperations [
 	| s m s2 r r2 |
 	"a mix of unsymmetric and symmetric matrices"
@@ -811,7 +843,7 @@ PMMatrixTest >> testSimpleMatrixOperations [
 	self assert: m transpose * m equals: m squared
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testSkalarMultiplication [
 	| a r |
 	a := PMMatrix rows: #(#(1 2) #(3 3)).
@@ -829,7 +861,7 @@ PMMatrixTest >> testSkalarMultiplication [
 	self assert: r class equals: PMSymmetricMatrix
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testStrassenProductWithMatrix [
 		
 	| aPMMatrix expected strassenProduct |
@@ -840,7 +872,7 @@ PMMatrixTest >> testStrassenProductWithMatrix [
 	self assert: strassenProduct equals: expected.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testStrassenProductWithMatrixWithInvalidShapes [
 		
 	| aPMMatrix |
@@ -852,7 +884,7 @@ PMMatrixTest >> testStrassenProductWithMatrixWithInvalidShapes [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testSymmetric [
 |a m|
 a:=#(1 2 3)asPMVector.
@@ -867,7 +899,7 @@ self assert: (m isSymmetric ).
 
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testSymmetricMatrixAdd [
 	| a b c |
 	a := (PMMatrix rows: #(#(11 12 13) #(12 22 23) #(13 23 33)))
@@ -881,7 +913,7 @@ PMMatrixTest >> testSymmetricMatrixAdd [
 	self assert: ((c rowAt: 1) at: 3) equals: 16
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testSymmetricMatrixAdd2 [
 	| a b c |
 	a := PMSymmetricMatrix rows: #(#(11 12 13) #(12 22 23) #(13 23 33)).
@@ -894,7 +926,7 @@ PMMatrixTest >> testSymmetricMatrixAdd2 [
 	self assert: ((c rowAt: 1) at: 3) equals: 16
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testSymmetricMatrixAdd3 [
 	| a b c |
 	a := PMMatrix rows: #(#(11 12 13) #(21 22 23) #(31 32 33)).
@@ -911,7 +943,7 @@ PMMatrixTest >> testSymmetricMatrixAdd3 [
 	self assert: ((c rowAt: 3) at: 1) equals: 31
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testTake [
 
 	| m expected |
@@ -928,14 +960,14 @@ PMMatrixTest >> testTake [
 	self assert: (m take: 2) equals: expected.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testVectorConversion [
 	| m |
 	m := PMMatrix rows: #(#(1 2 3) #(4 5 6) #(7 8 9)).
 	self assert: m asVector equals: #(1 2 3 4 5 6 7 8 9) asPMVector
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testVectorMatrixOperation [
 	"Code Example 8.1"
 
@@ -948,7 +980,7 @@ PMMatrixTest >> testVectorMatrixOperation [
 	self assert: (v at: 2) equals: 4
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testVectorToVectorConversion [
 
 	| vect result expected |
@@ -960,7 +992,7 @@ PMMatrixTest >> testVectorToVectorConversion [
 	self assert: result equals: expected
 ]
 
-{ #category : #'linear algebra' }
+{ #category : 'linear algebra' }
 PMMatrixTest >> testVectorTransposeMatrixOperation [
 	"Code Example 8.1"
 
@@ -974,7 +1006,7 @@ PMMatrixTest >> testVectorTransposeMatrixOperation [
 	self assert: (w at: 3) equals: 56
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMMatrixTest >> testZerosMatrix [
 |a|
 	a:=PMMatrix zerosRows: 2 cols: 3.

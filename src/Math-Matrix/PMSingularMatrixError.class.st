@@ -3,18 +3,19 @@ some calculations dont work with singular matrices and result eg with errors lik
 
 "
 Class {
-	#name : #PMSingularMatrixError,
-	#superclass : #ArithmeticError,
-	#category : #'Math-Matrix'
+	#name : 'PMSingularMatrixError',
+	#superclass : 'ArithmeticError',
+	#category : 'Math-Matrix',
+	#package : 'Math-Matrix'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PMSingularMatrixError >> messageText [
 	"Overwritten to initialize the message text to a standard text if it has not yet been set"
 	^ messageText ifNil: [ messageText := self standardMessageText ]
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 PMSingularMatrixError >> standardMessageText [
 	^ String streamContents: [ :stream |
 		stream << (self signalerContext  asString findTokens: '>')last.

@@ -27,18 +27,19 @@ Internal Representation and Key Implementation Points.
     Implementation Points
 "
 Class {
-	#name : #PMSingularValueDecompositionTest,
-	#superclass : #TestCase,
+	#name : 'PMSingularValueDecompositionTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'matrix',
 		'actualU',
 		'actualV',
 		'actualS'
 	],
-	#category : #'Math-Matrix-Tests'
+	#category : 'Math-Matrix-Tests',
+	#package : 'Math-Matrix-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PMSingularValueDecompositionTest >> loadExample1 [
 	"Simple example. Square matrix with real values"
 		
@@ -59,7 +60,7 @@ PMSingularValueDecompositionTest >> loadExample1 [
 		(0 0)).
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PMSingularValueDecompositionTest >> loadExample2 [
 	"Simple example. Square matrix with real values"
 		
@@ -88,7 +89,7 @@ PMSingularValueDecompositionTest >> loadExample2 [
 		(0 0 0 0)).
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PMSingularValueDecompositionTest >> loadExample3 [
 	"Rectangular matrix with real values"
 		
@@ -113,7 +114,7 @@ PMSingularValueDecompositionTest >> loadExample3 [
 			with: (Array with: 0 with: 1 with: 0) ).
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PMSingularValueDecompositionTest >> loadExample4 [
 	"Rectangular matrix with real values"
 		
@@ -145,7 +146,7 @@ PMSingularValueDecompositionTest >> loadExample4 [
 	)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PMSingularValueDecompositionTest >> setUp [
 	super setUp.
 	self loadExample1
@@ -154,7 +155,7 @@ PMSingularValueDecompositionTest >> setUp [
 	"self loadExample4."
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMSingularValueDecompositionTest >> testIsExampleCorrect [
 	"Verifying that the example SVD is correct"
 
@@ -163,7 +164,7 @@ PMSingularValueDecompositionTest >> testIsExampleCorrect [
 	self assert: reconstructed closeTo: matrix.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMSingularValueDecompositionTest >> testIsExampleOrthonormalU [
 	"Verifying that matrix U in the given example is orthonormal. That is, all columns of U are unit vectors and orthogonal to each other."
 	
@@ -175,7 +176,7 @@ PMSingularValueDecompositionTest >> testIsExampleOrthonormalU [
 	self assert: (actualU transpose * actualU) closeTo: identity
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMSingularValueDecompositionTest >> testIsExampleOrthonormalV [
 	"Verifying that matrix V in the given example is orthonormal. That is, all columns of V are unit vectors and orthogonal to each other."
 	
@@ -187,7 +188,7 @@ PMSingularValueDecompositionTest >> testIsExampleOrthonormalV [
 	self assert: (actualV transpose * actualV) closeTo: identity
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMSingularValueDecompositionTest >> testIsOrthonormalU [
 
 	"Verifying that matrix U is orthonormal. That is, all columns of U are unit vectors and orthogonal to each other."
@@ -199,7 +200,7 @@ PMSingularValueDecompositionTest >> testIsOrthonormalU [
 	self assert: u transpose * u closeTo: identity
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMSingularValueDecompositionTest >> testIsOrthonormalV [
 
 	"Verifying that matrix U is orthonormal. That is, all columns of U are unit vectors and orthogonal to each other."
@@ -211,7 +212,7 @@ PMSingularValueDecompositionTest >> testIsOrthonormalV [
 	self assert: v transpose * v closeTo: identity
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMSingularValueDecompositionTest >> testIsSquareU [
 
 	"U should be a square matrix"
@@ -221,7 +222,7 @@ PMSingularValueDecompositionTest >> testIsSquareU [
 	self assert: u numberOfRows equals: u numberOfColumns
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMSingularValueDecompositionTest >> testIsSquareV [
 
 	"V should be a square matrix"
@@ -231,7 +232,7 @@ PMSingularValueDecompositionTest >> testIsSquareV [
 	self assert: v numberOfRows equals: v numberOfColumns
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMSingularValueDecompositionTest >> testReconstruction [
 
 	| svd u v s reconstructed |
@@ -243,7 +244,7 @@ PMSingularValueDecompositionTest >> testReconstruction [
 	self assert: reconstructed closeTo: matrix
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMSingularValueDecompositionTest >> testShapeS [
 
 	"If A is an (m x n) matrix, then S should be an (m x n) matrix"
@@ -256,7 +257,7 @@ PMSingularValueDecompositionTest >> testShapeS [
 	self assert: s numberOfColumns equals: n
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMSingularValueDecompositionTest >> testShapeU [
 
 	"If A is an (m x n) matrix, then U should be an (m x m) matrix"
@@ -268,7 +269,7 @@ PMSingularValueDecompositionTest >> testShapeU [
 	self assert: u numberOfColumns equals: m
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMSingularValueDecompositionTest >> testShapeV [
 
 	"If A is an (m x n) matrix, then V should be an (n x n) matrix"
@@ -280,7 +281,7 @@ PMSingularValueDecompositionTest >> testShapeV [
 	self assert: v numberOfColumns equals: n
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMSingularValueDecompositionTest >> testValueS [
 
 	"Comparing S to its known value"
@@ -290,7 +291,7 @@ PMSingularValueDecompositionTest >> testValueS [
 	self assert: s closeTo: actualS
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMSingularValueDecompositionTest >> testValueU [
 
 	"Comparing U to its known value"
@@ -300,7 +301,7 @@ PMSingularValueDecompositionTest >> testValueU [
 	self assert: u closeTo: actualU
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMSingularValueDecompositionTest >> testValueV [
 
 	"Comparing V to its known value"

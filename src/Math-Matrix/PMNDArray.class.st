@@ -1,34 +1,35 @@
 Class {
-	#name : #PMNDArray,
-	#superclass : #Object,
+	#name : 'PMNDArray',
+	#superclass : 'Object',
 	#instVars : [
 		'array',
 		'shape',
 		'first',
 		'strides'
 	],
-	#category : #'Math-Matrix'
+	#category : 'Math-Matrix',
+	#package : 'Math-Matrix'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PMNDArray class >> fromNestedArray: anArray [
 
 	^ self new array: anArray flattened withShape: (self shape:anArray)
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PMNDArray class >> fromScalar: anInteger [
 
 	^ self new array: {anInteger} withShape: #(  )
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PMNDArray class >> newWith: anInteger [
 
 	^ self new array: {anInteger} withShape: #(  )
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PMNDArray class >> shape: anArray [
 
 anArray isArray ifFalse:[^#()]
@@ -38,14 +39,14 @@ ifTrue:[
 
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PMNDArray >> = aPMNDArray [
 
 	^ array = aPMNDArray asArray & (first = aPMNDArray first)
 	  & (strides = aPMNDArray strides) & (shape = aPMNDArray shape)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PMNDArray >> array: aFlatArray withShape: aShape [
 
 	array := aFlatArray.
@@ -54,12 +55,12 @@ PMNDArray >> array: aFlatArray withShape: aShape [
 	shape ifNotEmpty: [ self updateStrides]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PMNDArray >> asArray [ 
 	^array 
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 PMNDArray >> at: coords [
 
 	| position |
@@ -67,18 +68,18 @@ PMNDArray >> at: coords [
 	^ array at: position
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PMNDArray >> at: coords put: aValue [
 
 array at: (self flattenedIndexOf: coords) put: aValue
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PMNDArray >> first [ 
 ^first
 ]
 
-{ #category : #'primitives - file' }
+{ #category : 'primitives - file' }
 PMNDArray >> flattenedIndexOf: coords [
 
 	| position |
@@ -88,7 +89,7 @@ PMNDArray >> flattenedIndexOf: coords [
 	^ position
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PMNDArray >> fromNestedArray: aFlatArray withShape: aShape [
 
 	array := aFlatArray.
@@ -97,55 +98,55 @@ PMNDArray >> fromNestedArray: aFlatArray withShape: aShape [
 	shape ifNotEmpty: [ self updateStrides]
 ]
 
-{ #category : #operation }
+{ #category : 'operation' }
 PMNDArray >> hadamardProduct: aPMNDArray [
 	^ self with: aPMNDArray collect: [:a :b| a*b]
 	
 	
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PMNDArray >> hasSameShapeAs: aPMNDArray [
 	^ self shape = aPMNDArray shape
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PMNDArray >> rank [
 	^ shape size
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PMNDArray >> reshape: aNewShape [
 
 	^ self viewWithShape: aNewShape.
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PMNDArray >> shape [
 
 	^ shape
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PMNDArray >> size [
 
 ^ shape inject: 1 into:  [  :each :product | each * product].
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PMNDArray >> strides [ 
 ^strides 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PMNDArray >> updateFirst [
 
 	first := Array new: shape size withAll: 1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PMNDArray >> updateStrides [
 
 	strides := Array new: shape size.
@@ -154,7 +155,7 @@ PMNDArray >> updateStrides [
 		strides at: i put: ((strides at: i + 1) * (shape at: i+1))]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PMNDArray >> view [
 
 	"Share only the array"
@@ -162,14 +163,14 @@ PMNDArray >> view [
 	^ self viewWithShape: shape
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PMNDArray >> viewWithShape: aNewShape [
 
 	^ PMNDArray new array: self asArray withShape: aNewShape
 
 ]
 
-{ #category : #operation }
+{ #category : 'operation' }
 PMNDArray >> with: aPMNDArray collect: aBlock [
 	(self hasSameShapeAs: aPMNDArray)
 		ifFalse:[ShapeMismatch signal ].

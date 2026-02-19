@@ -16,16 +16,17 @@ method ==pivotAt:== when the division with the zero pivot is performed. The meth
 exception handling structure and sets the solution vector to a special value --- the integer 0 --- as a flag to prevent attempting Gaussian elimination a second time. Then, the value ==nil== is returned to represent the non-existent solution.
 "
 Class {
-	#name : #PMLinearEquationSystem,
-	#superclass : #Object,
+	#name : 'PMLinearEquationSystem',
+	#superclass : 'Object',
 	#instVars : [
 		'rows',
 		'solutions'
 	],
-	#category : #'Math-Matrix'
+	#category : 'Math-Matrix',
+	#package : 'Math-Matrix'
 }
 
-{ #category : #creation }
+{ #category : 'creation' }
 PMLinearEquationSystem class >> equations: anArrayOfArrays constant: anArray [ 
 
 	^ self basicNew 
@@ -33,7 +34,7 @@ PMLinearEquationSystem class >> equations: anArrayOfArrays constant: anArray [
 			constants: (Array with: anArray)
 ]
 
-{ #category : #creation }
+{ #category : 'creation' }
 PMLinearEquationSystem class >> equations: anArrayOfArrays constants: anArrayOfConstantArrays [ 
 
 	^ self basicNew 
@@ -41,7 +42,7 @@ PMLinearEquationSystem class >> equations: anArrayOfArrays constants: anArrayOfC
 		constants: anArrayOfConstantArrays
 ]
 
-{ #category : #transformation }
+{ #category : 'transformation' }
 PMLinearEquationSystem >> backSubstitutionAt: anInteger [
 		"Private - Perform the back-substitution step corresponding to the anInteger-th constant array."
 	| size answer accumulator |
@@ -57,7 +58,7 @@ PMLinearEquationSystem >> backSubstitutionAt: anInteger [
 	solutions at: anInteger put: answer.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PMLinearEquationSystem >> initialize: anArrayOfArrays constants: anArrayOfConstantArrays [
 	"Private - Initialize the receiver with system's matrix in anArrayOfArrays and several constants."
 	| n |
@@ -66,7 +67,7 @@ PMLinearEquationSystem >> initialize: anArrayOfArrays constants: anArrayOfConsta
 	^ self
 ]
 
-{ #category : #information }
+{ #category : 'information' }
 PMLinearEquationSystem >> largestPivotFrom: anInteger [
 	"Private - Answers the largest pivot element in column anInteger, from position anInteger upward."
 	| valueOfMaximum indexOfMaximum |
@@ -82,7 +83,7 @@ PMLinearEquationSystem >> largestPivotFrom: anInteger [
 	^ indexOfMaximum
 ]
 
-{ #category : #transformation }
+{ #category : 'transformation' }
 PMLinearEquationSystem >> pivotAt: anInteger [
 	"Private - Performs pivot operation with pivot element at anInteger."
 	| inversePivot rowPivotValue row pivotRow |
@@ -99,14 +100,14 @@ PMLinearEquationSystem >> pivotAt: anInteger [
 		].
 ]
 
-{ #category : #transformation }
+{ #category : 'transformation' }
 PMLinearEquationSystem >> pivotStepAt: anInteger [
 	"Private - Performs an optimum pivot operation at anInteger."
 	self swapRow: anInteger withRow: (self largestPivotFrom: anInteger);
 		   pivotAt: anInteger.
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 PMLinearEquationSystem >> printOn: aStream [
 	"Append to the argument aStream, a sequence of characters that describes the receiver."
 	| delimitingString n k |
@@ -128,13 +129,13 @@ PMLinearEquationSystem >> printOn: aStream [
 	
 ]
 
-{ #category : #information }
+{ #category : 'information' }
 PMLinearEquationSystem >> solution [
 	"Answers the solution corresponding to the first constant array."
 	^ self solutionAt: 1
 ]
 
-{ #category : #information }
+{ #category : 'information' }
 PMLinearEquationSystem >> solutionAt: anInteger [
 	"Answer the solution corresponding to the anInteger-th constant array."
 
@@ -147,14 +148,14 @@ PMLinearEquationSystem >> solutionAt: anInteger [
 	^ solutions at: anInteger
 ]
 
-{ #category : #transformation }
+{ #category : 'transformation' }
 PMLinearEquationSystem >> solve [
 	"Private - Perform LU decomposition of the system."
 	1 to: rows size do: [ :n | self pivotStepAt: n ].
 	solutions := Array new: ((rows at: 1) size - rows size).
 ]
 
-{ #category : #transformation }
+{ #category : 'transformation' }
 PMLinearEquationSystem >> swapRow: anInteger1 withRow: anInteger2 [
 	"Private - Swap the rows indexed by the given integers."
 

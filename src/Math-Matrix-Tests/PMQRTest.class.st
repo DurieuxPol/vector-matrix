@@ -1,10 +1,11 @@
 Class {
-	#name : #PMQRTest,
-	#superclass : #TestCase,
-	#category : #'Math-Matrix-Tests'
+	#name : 'PMQRTest',
+	#superclass : 'TestCase',
+	#category : 'Math-Matrix-Tests',
+	#package : 'Math-Matrix-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PMQRTest >> assert: inverse isMoorePenroseInverseOf: aMatrix [
 
 	"https://en.wikipedia.org/wiki/Moore–Penrose_inverse#Definition"
@@ -27,7 +28,7 @@ PMQRTest >> assert: inverse isMoorePenroseInverseOf: aMatrix [
 		closeTo: aMatrix mpInverse transpose.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMQRTest >> testDecompositionOfMatrixCausingErraticFailure [
 
 	<expectedFailure>
@@ -61,7 +62,7 @@ PMQRTest >> testDecompositionOfMatrixCausingErraticFailure [
 	self assert: pivot equals: #( 3 4 3 nil )
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMQRTest >> testHorizontalRectangularMatrixCannotBeDecomposed [
 
 	| horizontalRectangularMatrix |
@@ -75,7 +76,7 @@ PMQRTest >> testHorizontalRectangularMatrixCannotBeDecomposed [
 		raise: Error
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMQRTest >> testMoorePenroseInverseOfLargeNonRandomMatrixAndItsTranspose [
 	| a inverse transposeOfA |
 	a := PMMatrix new initializeRows:
@@ -88,7 +89,7 @@ PMQRTest >> testMoorePenroseInverseOfLargeNonRandomMatrixAndItsTranspose [
 	self assert: inverse isMoorePenroseInverseOf: transposeOfA.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMQRTest >> testMoorePenroseInverseOfNonRandomMatrix [
 	| a inverse |
 	a := PMMatrix new initializeRows:
@@ -97,7 +98,7 @@ PMQRTest >> testMoorePenroseInverseOfNonRandomMatrix [
 	self assert: inverse isMoorePenroseInverseOf: a.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMQRTest >> testMoorePenroseInverseOfProductOfMatrices [
 
 	| a inverse |
@@ -112,7 +113,7 @@ PMQRTest >> testMoorePenroseInverseOfProductOfMatrices [
 	self assert: inverse isMoorePenroseInverseOf: a
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMQRTest >> testMoorePenroseInverseOfRandomMatrixIsAnInverse [
 	"
 Proofs for the properties below can be found in literature:
@@ -125,7 +126,7 @@ If A is invertible, its pseudoinverse is its inverse. That is, A+ = A**−1
 	self assert: (a mpInverse closeTo: a inverse)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMQRTest >> testOrthogonalize [
 
 	| a b i |
@@ -151,7 +152,7 @@ PMQRTest >> testOrthogonalize [
 	i < 10 ] whileTrue
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMQRTest >> testQRFactorization [
 
 	| a qr |
@@ -183,7 +184,7 @@ PMQRTest >> testQRFactorization [
 		2 to: qr second numberOfRows do: [ :r | self assert: (((qr second rowAt: r) first: r - 1) closeTo: (Array new: r - 1 withAll: 0)) ] ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMQRTest >> testRank [
 
 	| random randomNumber matrix |
@@ -206,7 +207,7 @@ PMQRTest >> testRank [
 			self assert: matrix transpose rank equals: 3 ] ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMQRTest >> testSimpleQRDecomposition [
 
 	| a qrDecomposition decomposition |
@@ -222,7 +223,7 @@ PMQRTest >> testSimpleQRDecomposition [
 	self assert: decomposition first * decomposition second equals: a
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMQRTest >> testSimpleQRDecompositionWithPivot [
 
 	| a qrDecomposition decomposition expected |
@@ -245,7 +246,7 @@ PMQRTest >> testSimpleQRDecompositionWithPivot [
 		closeTo: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PMQRTest >> testVectorHouseholder [
 	"result is householdermatrix * v"
 
