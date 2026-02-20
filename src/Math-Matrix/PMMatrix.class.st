@@ -498,6 +498,8 @@ PMMatrix >> eigen [
 	matrix eigen values.
 	matrix eigen vectors."
 
+	self numberOfColumns == 1 & self numberOfRows == 1 ifTrue: [ ^ PMSingleValueMatrixHelper matrix: self ].
+
 	self isSymmetric
 		ifTrue: [ ^ self asSymmetricMatrix eigen ]
 		ifFalse: [ self error: 'Eigenvalues and eigenvectors of non-symmetric matrix are currently not supported' ]
