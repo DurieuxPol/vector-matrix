@@ -164,6 +164,22 @@ PMMatrixTest >> testDimension [
 ]
 
 { #category : 'linear algebra' }
+PMMatrixTest >> testEigenForSingleValueMatrix [
+
+	| matrix expectedEigenvalues eigenvalues expectedEigenvectors eigenvectors |
+	matrix := PMMatrix rows: #( #( 3 ) ).
+
+	expectedEigenvalues := #( 3 ).
+	expectedEigenvectors := PMVector with: (PMVector ones: 1).
+
+	eigenvalues := matrix eigen values.
+	eigenvectors := matrix eigen vectors.
+
+	eigenvalues with: expectedEigenvalues do: [ :actual :expected | self assert: actual closeTo: expected ].
+	eigenvectors with: expectedEigenvectors do: [ :actual :expected | self assert: actual closeTo: expected ]
+]
+
+{ #category : 'linear algebra' }
 PMMatrixTest >> testEigenvalues [
 	"Code Example 8.15"
 
