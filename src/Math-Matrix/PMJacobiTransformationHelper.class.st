@@ -24,22 +24,13 @@ PMJacobiTransformationHelper class >> new [
 	^ self error: 'Illegal creation message for this class'
 ]
 
-{ #category : 'as yet unclassified' }
-PMJacobiTransformationHelper >> cleanValues: aCollection [
-
-	^ aCollection collect: [ :each |
-			  (each closeTo: 0)
-				  ifTrue: [ 0 ]
-				  ifFalse: [ each ] ]
-]
-
 { #category : 'initialization' }
 PMJacobiTransformationHelper >> initialize: aSymmetricMatrix [
 
 	| jacobi |
-	jacobi := PMJacobiTransformationBis matrix: aSymmetricMatrix.
-	eigenvalues := self cleanValues: jacobi evaluate.
-	eigenvectors := jacobi transform columnsCollect: [ :each | each].
+	jacobi := PMJacobiTransformation matrix: aSymmetricMatrix.
+	eigenvalues := jacobi eigenValues.
+	eigenvectors := jacobi eigenVectors columnsCollect: [ :each | each].
 ]
 
 { #category : 'accessing' }
