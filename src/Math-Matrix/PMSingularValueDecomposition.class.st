@@ -45,6 +45,31 @@ PMSingularValueDecomposition class >> decompose: aMatrix [
 	^ self new initialize: aMatrix
 ]
 
+{ #category : 'adding' }
+PMSingularValueDecomposition >> addMissingLeftVectorsFor: aMatrix [
+
+	| m k |
+	m := leftSingularMatrix numberOfRows.
+	k := aMatrix rank.
+
+	1 to: m do: [ :i |
+			| w norm |
+			k = m ifTrue: [ ^ self ].
+
+			w := PMVector zeros: m.
+			w at: i put: 1.0.
+			1 to: k do: [ :j |
+					| uj proj |
+					uj := leftSingularMatrix columnAt: j.
+					proj := uj * w.
+					w := w - (uj * proj) ].
+
+			norm := w norm.
+			norm > 0 ifTrue: [
+					k := k + 1.
+					leftSingularMatrix atColumn: k put: w / norm ] ].
+]
+
 { #category : 'accessing' }
 PMSingularValueDecomposition >> diagonalSingularValueMatrix [
 	"Diagonal matrix S in A = USV decomposition. All elements are 0 except those on the main diagonal. The values on the diagonal are singular values of matrix A. By convention, they are sorted in descending order"
@@ -55,20 +80,27 @@ PMSingularValueDecomposition >> diagonalSingularValueMatrix [
 { #category : 'initialization' }
 PMSingularValueDecomposition >> initialize: aMatrix [
 
-	| m n symU symV eigenU eigenV diag |
+	| m n symV eigenV diag singularValues |
 	m := aMatrix numberOfRows.
 	n := aMatrix numberOfColumns.
-	symU := aMatrix * aMatrix transpose.
-	symV := aMatrix transpose * aMatrix.
 
-	"Expensive computation"
-	eigenU := symU eigen.
-	eigenV := symV eigen.
-	leftSingularMatrix := (PMMatrix rows: eigenU vectors) transpose.
+	symV := aMatrix transpose * aMatrix.
+	eigenV := symV eigen. "Sort eigenpairs by descending eigenvalue" "Clamp tiny negative eigenvalues to 0"
+
+	singularValues := eigenV values collect: [ :lam | (lam max: 0) sqrt ].
 	rightSingularMatrix := (PMMatrix rows: eigenV vectors) transpose.
-	diag := m < n
-		        ifTrue: [ eigenU values ]
-		        ifFalse: [ eigenV values ].
+	leftSingularMatrix := PMMatrix rows: m columns: m random: 0.
+	1 to: singularValues size do: [ :i |
+			| sigma vi ui |
+			sigma := singularValues at: i.
+			sigma > 0 ifTrue: [
+					vi := rightSingularMatrix columnAt: i.
+					ui := aMatrix * vi / sigma.
+					leftSingularMatrix atColumn: i put: ui ] ].
+
+	self addMissingLeftVectorsFor: aMatrix.
+
+	diag := eigenV values.
 	diagonalSingularValueMatrix := PMMatrix rows: m columns: n random: 0.
 	diagonalSingularValueMatrix setDiagonal: diag sqrt
 ]
