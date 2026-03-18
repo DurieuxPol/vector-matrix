@@ -15,7 +15,7 @@ PMJacobiTransformationTest >> testEigenvalueOfIdentityMatrixIsOne [
 	jacobiTransformation := PMJacobiTransformation matrix: identityMatrix.
 	
 	expected := #(1 1).
-	self assert: jacobiTransformation evaluate equals: expected
+	self assert: jacobiTransformation eigenValues equals: expected
 ]
 
 { #category : 'tests' }
@@ -26,7 +26,7 @@ PMJacobiTransformationTest >> testEigenvectorsOfIdentityMatrixAreTheUnitVectors 
 	identityMatrix := PMMatrix rows: #(#(1 0) #(0 1)).
 	jacobiTransform := PMJacobiTransformation matrix: identityMatrix.
 	
-	matrixOfEigenvectors := jacobiTransform transform.
+	matrixOfEigenvectors := jacobiTransform eigenVectors.
 	
 	expected := PMSymmetricMatrix identity: 2.
 	self assert: matrixOfEigenvectors equals: expected.

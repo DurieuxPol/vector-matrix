@@ -63,7 +63,7 @@ PMSingularValueDecompositionTest class >> loadExamples [
 	example4 := PMSingularValueDecompositionExample
 		            newMatrix: (PMMatrix rows: #( #( 1 0 0 0 2 ) #( 0 0 3 0 0 ) #( 0 0 0 0 0 ) #( 0 2 0 0 0 ) ))
 		            u: (PMMatrix rows: #( #( 0 1 0 0 ) #( 1 0 0 0 ) #( 0 0 0 1 ) #( 0 0 1 0 ) ))
-		            v: (PMMatrix rows: { { 0. 0.2 sqrt. 0. 0.8 sqrt. 0 }. { 0. 0. 1. 0. 0 }. { 1. 0. 0. 0. 0 }. { 0. 0. 0. 0. 1 }. { 0. 0.8 sqrt. 0. 0.2 sqrt negated. 0 } })
+		            v: (PMMatrix rows: { { 0. 0.2 sqrt. 0. 0. 0.8 sqrt }. { 0. 0. 1. 0. 0 }. { 1. 0. 0. 0. 0 }. { 0. 0. 0. 1. 0 }. { 0. 0.8 sqrt. 0. 0. 0.2 sqrt negated } })
 		            s: (PMMatrix rows: { { 3. 0. 0. 0. 0 }. { 0. 5 sqrt. 0. 0. 0 }. { 0. 0. 2. 0. 0 }. { 0. 0. 0. 0. 0 } }).
 ]
 

@@ -1,25 +1,16 @@
 "
-```
-| m jacobi eigenvalues eigenvectors |
-m := PMSymmetricMatrix rows: #((84 -79 58 55)
-                                 (-79 84 -55 -58)
-                                 (58 -55 84 79)
-                                 (55 -58 79 84)).
-jacobi := PMJacobiTransformation matrix: m.
-eigenvalues := jacobi evaluate.
-eigenvectors := jacobi transform columnsCollect: [ :each | each].
-```
+Based on the algorithm in ""Numerical Recipes in Fortran 77: The Art of Scientific Computing"", Chapter 11, page 460 ( https://perso.ens-lyon.fr/christophe.winisdoerffer/INTRO_NUM/NumericalRecipesinF77.pdf ).
+
+
 "
 Class {
 	#name : 'PMJacobiTransformation',
 	#superclass : 'Object',
 	#instVars : [
-		'precision',
-		'desiredPrecision',
-		'maximumIterations',
-		'result',
-		'lowerRows',
-		'transform'
+		'numberOfRotations',
+		'matrixSize',
+		'eigenValues',
+		'eigenVectors'
 	],
 	#category : 'Math-Matrix',
 	#package : 'Math-Matrix'
@@ -27,199 +18,165 @@ Class {
 
 { #category : 'creation' }
 PMJacobiTransformation class >> matrix: aSymmetricMatrix [
+
 	^ super new initialize: aSymmetricMatrix
 ]
 
-{ #category : 'creation' }
-PMJacobiTransformation class >> new [
-	"Prevent using this message to create instances."
+{ #category : 'accessing' }
+PMJacobiTransformation >> eigenValues [
 
-	^ self error: 'Illegal creation message for this class'
+	^ eigenValues
 ]
 
 { #category : 'accessing' }
-PMJacobiTransformation >> desiredPrecision: aNumber [
-	"Defines the desired precision for the result."
+PMJacobiTransformation >> eigenVectors [
 
-	aNumber > 0 ifFalse: [ ^ self error: 'Illegal precision: ' , aNumber printString ].
-	desiredPrecision := aNumber
+	^ eigenVectors
 ]
 
-{ #category : 'operation' }
-PMJacobiTransformation >> evaluate [
-	"Perform the iteration until either the desired precision is attained or the number of iterations exceeds the maximum."
+{ #category : 'computing' }
+PMJacobiTransformation >> evaluateIterationsOn: jacobiMatrix accumulations: accumulationVector corrections: correctionVector [
 
-	| iterations |
-	iterations := 0.
-	[
-	iterations := iterations + 1.
-	precision := self evaluateIteration.
-	self hasConverged or: [ iterations >= maximumIterations ] ] whileFalse.
-	self finalizeIterations.
-	^ result
-]
-
-{ #category : 'operation' }
-PMJacobiTransformation >> evaluateIteration [
-
-	| indices |
-	indices := self largestOffDiagonalIndices.
-	self transformAt: (indices at: 1) and: (indices at: 2).
-	^ precision
-]
-
-{ #category : 'transformation' }
-PMJacobiTransformation >> exchangeAt: anInteger [
-	"Private"
-
-	| temp n |
-	n := anInteger + 1.
-	temp := result at: n.
-	result at: n put: (result at: anInteger).
-	result at: anInteger put: temp.
-	transform do: [ :each |
-		temp := each at: n.
-		each at: n put: (each at: anInteger).
-		each at: anInteger put: temp ]
-]
-
-{ #category : 'operation' }
-PMJacobiTransformation >> finalizeIterations [
-	"Transfer the eigenValues into a vector and set this as the result.
-		 eigen values and transform matrix are sorted using a bubble sort."
-
-	| n |
-	n := 0.
-	result := lowerRows collect: [ :each |
-		          n := n + 1.
-		          each at: n ].
-	self sortEigenValues
-]
-
-{ #category : 'testing' }
-PMJacobiTransformation >> hasConverged [
-
-	^ precision <= desiredPrecision
+	| sum |
+	1 to: 50 do: [ :i |
+			sum := self sumUpperTriangle: jacobiMatrix.
+			sum = 0 ifTrue: [ ^ self ].
+			self
+				performJacobiIterationOn: jacobiMatrix
+				corrections: correctionVector
+				sum: sum
+				iteration: i.
+			1 to: matrixSize do: [ :ip |
+					accumulationVector at: ip put: (accumulationVector at: ip) + (correctionVector at: ip).
+					eigenValues at: ip put: (accumulationVector at: ip).
+					correctionVector at: ip put: 0 ] ]
 ]
 
 { #category : 'initialization' }
-PMJacobiTransformation >> initialize [
+PMJacobiTransformation >> initialize: inputMatrix [
 
-	super initialize.
-	desiredPrecision := Float machineEpsilon.
-	maximumIterations := 50
+	| jacobiMatrix accumulationVector correctionVector |
+	matrixSize := inputMatrix numberOfColumns.
+	jacobiMatrix := PMMatrix new: matrixSize.
+	eigenVectors := PMMatrix zerosRows: matrixSize cols: matrixSize.
+	1 to: matrixSize do: [ :i |
+			1 to: matrixSize do: [ :j |
+					jacobiMatrix at: i at: j put: (inputMatrix at: i at: j).
+					i = j ifTrue: [ eigenVectors at: i at: j put: 1 ] ] ].
+	numberOfRotations := 0.
+
+	accumulationVector := PMVector new: matrixSize.
+	eigenValues := Array new: matrixSize.
+
+	1 to: matrixSize do: [ :ip |
+			accumulationVector at: ip put: (jacobiMatrix at: ip at: ip).
+			eigenValues at: ip put: (accumulationVector at: ip) ].
+
+	correctionVector := PMVector zeros: matrixSize.
+
+	self evaluateIterationsOn: jacobiMatrix accumulations: accumulationVector corrections: correctionVector.
+	self sortEigen.
+
+	^ self
 ]
 
-{ #category : 'initialization' }
-PMJacobiTransformation >> initialize: aSymmetricMatrix [
-	"Private"
+{ #category : 'computing' }
+PMJacobiTransformation >> performJacobiIterationOn: jacobiMatrix corrections: correctionVector sum: sum iteration: iter [
 
-	| numberOfRows |
-	numberOfRows := aSymmetricMatrix numberOfRows.
-	lowerRows := Array new: numberOfRows.
-	transform := Array new: numberOfRows.
-	1 to: numberOfRows do: [ :k |
-		lowerRows at: k put: ((aSymmetricMatrix rowAt: k) copyFrom: 1 to: k).
-		transform at: k put: ((Array new: numberOfRows)
-				 atAllPut: 0;
-				 at: k put: 1;
-				 yourself) ]
+	| tresh |
+	tresh := iter < 4
+		         ifTrue: [ 0.2 * sum / matrixSize squared ]
+		         ifFalse: [ 0 ].
+	1 to: matrixSize - 1 do: [ :ip |
+			ip + 1 to: matrixSize do: [ :iq |
+					| c s g h t theta tau |
+					g := 100 * (jacobiMatrix at: ip at: iq) abs.
+					iter > 4 & ((eigenValues at: ip) abs + g = (eigenValues at: ip) abs)
+					& ((eigenValues at: iq) abs + g = (eigenValues at: iq) abs)
+						ifTrue: [ jacobiMatrix at: ip at: iq put: 0 ]
+						ifFalse: [
+								(jacobiMatrix at: ip at: iq) abs > tresh ifTrue: [
+										h := (eigenValues at: iq) - (eigenValues at: ip).
+										h abs + g = h abs
+											ifTrue: [ t := (jacobiMatrix at: ip at: iq) / h ]
+											ifFalse: [
+													theta := 0.5 * h / (jacobiMatrix at: ip at: iq).
+													t := 1 / (theta abs + (1.0 + theta squared) sqrt).
+													theta < 0 ifTrue: [ t := t negated ] ].
+										c := 1 / (1 + t squared) sqrt.
+										s := t * c.
+										tau := s / (1 + c).
+										h := t * (jacobiMatrix at: ip at: iq).
+										correctionVector at: ip put: (correctionVector at: ip) - h.
+										correctionVector at: iq put: (correctionVector at: iq) + h.
+										eigenValues at: ip put: (eigenValues at: ip) - h.
+										eigenValues at: iq put: (eigenValues at: iq) + h.
+										jacobiMatrix at: ip at: iq put: 0.
+										self
+											performRotationIn: jacobiMatrix
+											atIndexes: ip
+											and: iq
+											using: s
+											and: tau ] ] ] ]
 ]
 
-{ #category : 'accessing' }
-PMJacobiTransformation >> largestOffDiagonalIndices [
-	"Private"
+{ #category : 'computing' }
+PMJacobiTransformation >> performRotationIn: jacobiMatrix atIndexes: ip and: iq using: s and: tau [
 
-	| n m abs |
-	n := 2.
-	m := 1.
-	precision := ((lowerRows at: n) at: m) abs.
-	1 to: lowerRows size do: [ :i |
-		1 to: i - 1 do: [ :j |
-			abs := ((lowerRows at: i) at: j) abs.
-			abs > precision ifTrue: [
-				n := i.
-				m := j.
-				precision := abs ] ] ].
-	^ Array with: m with: n
+	| g h |
+	1 to: ip - 1 do: [ :j |
+			g := jacobiMatrix at: j at: ip.
+			h := jacobiMatrix at: j at: iq.
+			jacobiMatrix at: j at: ip put: g - (s * (h + (g * tau))).
+			jacobiMatrix at: j at: iq put: h + (s * (g - (h * tau))) ].
+	ip + 1 to: iq - 1 do: [ :j |
+			g := jacobiMatrix at: ip at: j.
+			h := jacobiMatrix at: j at: iq.
+			jacobiMatrix at: ip at: j put: g - (s * (h + (g * tau))).
+			jacobiMatrix at: j at: iq put: h + (s * (g - (h * tau))) ].
+	iq + 1 to: matrixSize do: [ :j |
+			g := jacobiMatrix at: ip at: j.
+			h := jacobiMatrix at: iq at: j.
+			jacobiMatrix at: ip at: j put: g - (s * (h + (g * tau))).
+			jacobiMatrix at: iq at: j put: h + (s * (g - (h * tau))) ].
+	1 to: matrixSize do: [ :j |
+			g := eigenVectors at: j at: ip.
+			h := eigenVectors at: j at: iq.
+			eigenVectors at: j at: ip put: g - (s * (h + (g * tau))).
+			eigenVectors at: j at: iq put: h + (s * (g - (h * tau))) ].
+	numberOfRotations := numberOfRotations + 1
 ]
 
-{ #category : 'accessing' }
-PMJacobiTransformation >> maximumIterations: anInteger [
-	"Defines the maximum number of iterations."
+{ #category : 'sorting' }
+PMJacobiTransformation >> sortEigen [
+	"Rounds the eigen values close to 0, and sorts the eigen values (and their respective eigen vectors) in descending order"
 
-	(anInteger isInteger and: [ anInteger > 1 ]) ifFalse: [ ^ self error: 'Invalid maximum number of iteration: ' , anInteger printString ].
-	maximumIterations := anInteger
+	| k value |
+	eigenValues := eigenValues collect: [ :each |
+			               (each closeTo: 0)
+				               ifTrue: [ 0 ]
+				               ifFalse: [ each ] ].
+	1 to: matrixSize - 1 do: [ :i |
+			k := i.
+			value := eigenValues at: i.
+			i + 1 to: matrixSize do: [ :j |
+					(eigenValues at: j) > value ifTrue: [
+							k := j.
+							value := eigenValues at: j ] ].
+			k ~= i ifTrue: [
+					eigenValues at: k put: (eigenValues at: i).
+					eigenValues at: i put: value.
+					1 to: matrixSize do: [ :j |
+							value := eigenVectors at: j at: i.
+							eigenVectors at: j at: i put: (eigenVectors at: j at: k).
+							eigenVectors at: j at: k put: value ] ] ]
 ]
 
-{ #category : 'printing' }
-PMJacobiTransformation >> printOn: aStream [
-	"Append to the argument aStream, a sequence of characters that describes the receiver."
+{ #category : 'computing' }
+PMJacobiTransformation >> sumUpperTriangle: a [
 
-	lowerRows do: [ :each | each printOn: aStream ] separatedBy: [ aStream cr ]
-]
-
-{ #category : 'transformation' }
-PMJacobiTransformation >> sortEigenValues [
-	"Private - Use a bubble sort."
-
-	| numberOfRows bound |
-	numberOfRows := lowerRows size.
-	bound := numberOfRows.
-	[ bound = 0 ] whileFalse: [
-		| m |
-		m := 0.
-		1 to: bound - 1 do: [ :j |
-			(result at: j) abs > (result at: j + 1) abs ifFalse: [
-				self exchangeAt: j.
-				m := j ] ].
-		bound := m ]
-]
-
-{ #category : 'transformation' }
-PMJacobiTransformation >> transform [
-
-	^ PMMatrix rows: transform
-]
-
-{ #category : 'transformation' }
-PMJacobiTransformation >> transformAt: anInteger1 and: anInteger2 [
-	"Private"
-
-	| d t s c tau apq app aqq arp arq |
-	apq := (lowerRows at: anInteger2) at: anInteger1.
-	apq = 0 ifTrue: [ ^ nil ].
-	app := (lowerRows at: anInteger1) at: anInteger1.
-	aqq := (lowerRows at: anInteger2) at: anInteger2.
-	d := aqq - app.
-	arp := d * 0.5 / apq.
-	t := arp > 0
-		     ifTrue: [ 1 / ((arp squared + 1) sqrt + arp) ]
-		     ifFalse: [ 1 / (arp - (arp squared + 1) sqrt) ].
-	c := 1 / (t squared + 1) sqrt.
-	s := t * c.
-	tau := s / (1 + c).
-	1 to: anInteger1 - 1 do: [ :r |
-		arp := (lowerRows at: anInteger1) at: r.
-		arq := (lowerRows at: anInteger2) at: r.
-		(lowerRows at: anInteger1) at: r put: arp - (s * (tau * arp + arq)).
-		(lowerRows at: anInteger2) at: r put: arq + (s * (arp - (tau * arq))) ].
-	anInteger1 + 1 to: anInteger2 - 1 do: [ :r |
-		arp := (lowerRows at: r) at: anInteger1.
-		arq := (lowerRows at: anInteger2) at: r.
-		(lowerRows at: r) at: anInteger1 put: arp - (s * (tau * arp + arq)).
-		(lowerRows at: anInteger2) at: r put: arq + (s * (arp - (tau * arq))) ].
-	anInteger2 + 1 to: lowerRows size do: [ :r |
-		arp := (lowerRows at: r) at: anInteger1.
-		arq := (lowerRows at: r) at: anInteger2.
-		(lowerRows at: r) at: anInteger1 put: arp - (s * (tau * arp + arq)).
-		(lowerRows at: r) at: anInteger2 put: arq + (s * (arp - (tau * arq))) ].
-	1 to: lowerRows size do: [ :r |
-		arp := (transform at: r) at: anInteger1.
-		arq := (transform at: r) at: anInteger2.
-		(transform at: r) at: anInteger1 put: arp - (s * (tau * arp + arq)).
-		(transform at: r) at: anInteger2 put: arq + (s * (arp - (tau * arq))) ].
-	(lowerRows at: anInteger1) at: anInteger1 put: app - (t * apq).
-	(lowerRows at: anInteger2) at: anInteger2 put: aqq + (t * apq).
-	(lowerRows at: anInteger2) at: anInteger1 put: 0
+	| sm |
+	sm := 0.
+	1 to: matrixSize - 1 do: [ :ip | ip + 1 to: matrixSize do: [ :iq | sm := sm + (a at: ip at: iq) abs ] ].
+	^ sm
 ]

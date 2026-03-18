@@ -193,9 +193,8 @@ PMMatrixTest >> testEigenvalues [
 	expectedEigenvalues := #(8.105482616526306 4.776537928330764 2.1179794551429305).
 	
 	finder := PMJacobiTransformation matrix: matrix.
-	finder desiredPrecision: 1.0e-09.
 	
-	eigenvalues := finder evaluate.
+	eigenvalues := finder eigenValues.
 	
 	eigenvalues with: expectedEigenvalues do: [ :actual :expected |
 		self assert: actual closeTo: expected ].
