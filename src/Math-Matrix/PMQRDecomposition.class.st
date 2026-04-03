@@ -8,7 +8,8 @@ Class {
 		'matrixToDecompose',
 		'colSize',
 		'r',
-		'q'
+		'q',
+		'comparisonPrecision'
 	],
 	#category : 'Math-Matrix',
 	#package : 'Math-Matrix'
@@ -19,6 +20,18 @@ PMQRDecomposition class >> of: matrix [
 	matrix numberOfRows < matrix numberOfColumns ifTrue: [ 
 		self error: 'numberOfRows<numberOfColumns' ].
 	^ self new of: matrix
+]
+
+{ #category : 'constants' }
+PMQRDecomposition >> comparisonPrecision [
+
+	^ comparisonPrecision ifNil: [ self defaultComparisonPrecision ]
+]
+
+{ #category : 'accessing' }
+PMQRDecomposition >> comparisonPrecision: anObject [
+
+	comparisonPrecision := anObject
 ]
 
 { #category : 'arithmetic' }
@@ -108,7 +121,7 @@ PMQRDecomposition >> decomposeWithPivot [
 			positionOfMaximum := (vectorOfNormSquareds
 				       copyFrom: rank + 1
 				       to: vectorOfNormSquareds size) max.
-			(positionOfMaximum closeTo: 0) ifTrue: [ positionOfMaximum := 0 ].
+			(positionOfMaximum closeTo: 0 precision: self comparisonPrecision) ifTrue: [ positionOfMaximum := 0 ].
 			positionOfMaximum := positionOfMaximum > 0
 				      ifTrue: [ 
 				      vectorOfNormSquareds indexOf: positionOfMaximum startingAt: rank + 1 ]
@@ -126,6 +139,12 @@ PMQRDecomposition >> decomposeWithPivot [
 		q := PMMatrix rows:
 			     (q rowsCollect: [ :row | row copyFrom: 1 to: i ]) ].
 	^ Array with: q with: r with: pivot
+]
+
+{ #category : 'constants' }
+PMQRDecomposition >> defaultComparisonPrecision [
+
+	^ 0.0001
 ]
 
 { #category : 'private' }
