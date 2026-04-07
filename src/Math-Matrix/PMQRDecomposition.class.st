@@ -121,10 +121,8 @@ PMQRDecomposition >> householderReflectionOf: columnVector atColumnNumber: colum
 	householderVector := columnVector householder.
 	v := (PMVector zeros: columnNumber - 1) , (householderVector at: 2).
 	identityMatrix := PMSymmetricMatrix identity: colSize.
-	householderMatrix := identityMatrix
-	                     -
-	                     ((householderVector at: 1) * v tensorProduct: v).
-	^ Array with: householderVector with: householderMatrix .
+	householderMatrix := identityMatrix - (householderVector first * v tensorProduct: v).
+	^ Array with: householderVector with: householderMatrix
 ]
 
 { #category : 'private' }
@@ -150,8 +148,36 @@ PMQRDecomposition >> of: matrix [
 
 	matrixToDecompose := matrix.
 	colSize := matrixToDecompose numberOfRows.
-		r := self initialRMatrix.
-	q := self initialQMatrix.
+	r := self initialRMatrix.
+	q := self initialQMatrix
+]
+
+{ #category : 'accessing' }
+PMQRDecomposition >> permutationMatrixFromPivot [
+
+	| matrix |
+	matrix := PMMatrix zerosRows: matrixToDecompose numberOfRows cols: matrixToDecompose numberOfColumns.
+	pivot withIndexCollect: [ :column :index | matrix at: column at: index put: 1 ].
+
+	^ matrix
+]
+
+{ #category : 'accessing' }
+PMQRDecomposition >> pivot [
+
+	^ pivot
+]
+
+{ #category : 'accessing' }
+PMQRDecomposition >> q [
+
+	^ q
+]
+
+{ #category : 'accessing' }
+PMQRDecomposition >> r [
+
+	^ r
 ]
 
 { #category : 'private' }
