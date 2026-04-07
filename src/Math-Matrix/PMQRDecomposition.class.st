@@ -9,7 +9,7 @@ Class {
 		'colSize',
 		'r',
 		'q',
-		'comparisonPrecision'
+		'pivot'
 	],
 	#category : 'Math-Matrix',
 	#package : 'Math-Matrix'
@@ -20,18 +20,6 @@ PMQRDecomposition class >> of: matrix [
 	matrix numberOfRows < matrix numberOfColumns ifTrue: [ 
 		self error: 'numberOfRows<numberOfColumns' ].
 	^ self new of: matrix
-]
-
-{ #category : 'constants' }
-PMQRDecomposition >> comparisonPrecision [
-
-	^ comparisonPrecision ifNil: [ self defaultComparisonPrecision ]
-]
-
-{ #category : 'accessing' }
-PMQRDecomposition >> comparisonPrecision: anObject [
-
-	comparisonPrecision := anObject
 ]
 
 { #category : 'arithmetic' }
@@ -74,77 +62,56 @@ https://en.wikipedia.org/wiki/QR_decomposition#Using_Householder_reflections
 { #category : 'arithmetic' }
 PMQRDecomposition >> decomposeWithPivot [
 
-	| i vectorOfNormSquareds rank positionOfMaximum pivot matrixOfMinor |
-	vectorOfNormSquareds := matrixToDecompose columnsCollect: [ 
-		                        :columnVector | columnVector * columnVector ].
+	| i vectorOfNormSquareds rank positionOfMaximum matrixOfMinor |
+	vectorOfNormSquareds := matrixToDecompose columnsCollect: [ :columnVector | columnVector * columnVector ].
 	positionOfMaximum := vectorOfNormSquareds indexOf: vectorOfNormSquareds max.
-	pivot := Array new: vectorOfNormSquareds size.
+	pivot := (1 to: vectorOfNormSquareds size) asArray.
 	rank := 0.
-	[ 
-	| householderReflection householderMatrix householderVector columnVectorFromRMatrix |
-	rank := rank + 1.
-	pivot at: rank put: positionOfMaximum.
-	r swapColumn: rank withColumn: positionOfMaximum.
-	vectorOfNormSquareds swap: rank with: positionOfMaximum.
-	columnVectorFromRMatrix := r columnVectorAt: rank size: colSize.
-	householderReflection := self
-		                         householderReflectionOf:
-		                         columnVectorFromRMatrix
-		                         atColumnNumber: rank.
-	householderVector := householderReflection at: 1.
-	householderMatrix := householderReflection at: 2.
-	q := q * householderMatrix.
-	matrixOfMinor := r minor: rank - 1 and: rank - 1.
-	matrixOfMinor := matrixOfMinor
-	                 - ((householderVector at: 2) tensorProduct:
-			                  (householderVector at: 1)
-			                  * (householderVector at: 2) * matrixOfMinor).
-	matrixOfMinor rowsWithIndexDo: [ :aRow :index | 
-		aRow withIndexDo: [ :element :column | 
-			| rowNumber columnNumber |
-			rowNumber := rank + index - 1.
-			columnNumber := rank + column - 1.
-			r
-				rowAt: rowNumber
-				columnAt: columnNumber
-				put: ((element closeTo: 0)
-						 ifTrue: [ 0 ]
-						 ifFalse: [ element ]) ] ].
-	rank + 1 to: vectorOfNormSquareds size do: [ :ind | 
-		vectorOfNormSquareds
-			at: ind
-			put:
-			(vectorOfNormSquareds at: ind)
-			- (r rowAt: rank columnAt: ind) squared ].
-	rank < vectorOfNormSquareds size
-		ifTrue: [ 
-			positionOfMaximum := (vectorOfNormSquareds
-				       copyFrom: rank + 1
-				       to: vectorOfNormSquareds size) max.
-			(positionOfMaximum closeTo: 0 precision: self comparisonPrecision) ifTrue: [ positionOfMaximum := 0 ].
-			positionOfMaximum := positionOfMaximum > 0
-				      ifTrue: [ 
-				      vectorOfNormSquareds indexOf: positionOfMaximum startingAt: rank + 1 ]
-				      ifFalse: [ 0 ] ]
-		ifFalse: [ positionOfMaximum := 0 ].
-	positionOfMaximum > 0 ] whileTrue.
+	[
+		| temp householderReflection householderMatrix householderVector columnVectorFromRMatrix |
+		rank := rank + 1.
+		temp := pivot at: rank.
+		pivot at: rank put: (pivot at: positionOfMaximum).
+		pivot at: positionOfMaximum put: temp.
+
+		r swapColumn: rank withColumn: positionOfMaximum.
+		vectorOfNormSquareds swap: rank with: positionOfMaximum.
+		columnVectorFromRMatrix := r columnVectorAt: rank size: colSize.
+		householderReflection := self householderReflectionOf: columnVectorFromRMatrix atColumnNumber: rank.
+		householderVector := householderReflection first.
+		householderMatrix := householderReflection second.
+		q := q * householderMatrix.
+		matrixOfMinor := r minor: rank - 1 and: rank - 1.
+		matrixOfMinor := matrixOfMinor
+		                 - (householderVector second tensorProduct: householderVector first * householderVector second * matrixOfMinor).
+		matrixOfMinor rowsWithIndexDo: [ :aRow :index |
+				aRow withIndexDo: [ :element :column |
+						| rowNumber columnNumber |
+						rowNumber := rank + index - 1.
+						columnNumber := rank + column - 1.
+						r rowAt: rowNumber columnAt: columnNumber put: ((element closeTo: 0)
+								 ifTrue: [ 0 ]
+								 ifFalse: [ element ]) ] ].
+		rank + 1 to: vectorOfNormSquareds size do: [ :ind |
+		vectorOfNormSquareds at: ind put: (vectorOfNormSquareds at: ind) - (r rowAt: rank columnAt: ind) squared ].
+		rank < vectorOfNormSquareds size
+			ifTrue: [
+					positionOfMaximum := (vectorOfNormSquareds copyFrom: rank + 1 to: vectorOfNormSquareds size) max.
+					(positionOfMaximum closeTo: 0) ifTrue: [ positionOfMaximum := 0 ].
+					positionOfMaximum := positionOfMaximum > 0
+						                     ifTrue: [ vectorOfNormSquareds indexOf: positionOfMaximum startingAt: rank + 1 ]
+						                     ifFalse: [ 0 ] ]
+			ifFalse: [ positionOfMaximum := 0 ].
+		positionOfMaximum > 0 ] whileTrue.
 	i := 0.
-	[ (r rowAt: colSize) isZero ] whileTrue: [ 
-		i := i + 1.
-		colSize := colSize - 1 ].
-	i > 0 ifTrue: [ 
-		r := self upperTriangularPartOf: r With: colSize.
-		i := q numberOfColumns - i.
-		pivot := pivot copyFrom: 1 to: i.
-		q := PMMatrix rows:
-			     (q rowsCollect: [ :row | row copyFrom: 1 to: i ]) ].
+	[ (r rowAt: colSize) isZero ] whileTrue: [
+			i := i + 1.
+			colSize := colSize - 1 ].
+	i > 0 ifTrue: [
+			r := self upperTriangularPartOf: r With: colSize.
+			i := q numberOfColumns - i.
+			q := PMMatrix rows: (q rowsCollect: [ :row | row copyFrom: 1 to: i ]) ].
 	^ Array with: q with: r with: pivot
-]
-
-{ #category : 'constants' }
-PMQRDecomposition >> defaultComparisonPrecision [
-
-	^ 0.0001
 ]
 
 { #category : 'private' }
