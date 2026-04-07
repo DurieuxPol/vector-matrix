@@ -119,6 +119,51 @@ PMQRTest >> testOrthogonalize [
 ]
 
 { #category : 'tests' }
+PMQRTest >> testQRDecompositionOnRankDeficientMatrix [
+
+	| a qrDecomposition reconstruction |
+	a := PMMatrix rows: {
+			     { 1. 2. 3 }.
+			     { 4. 5. 6 }.
+			     { 7. 8. 9 } }.
+
+	qrDecomposition := PMQRDecomposition of: a.
+	qrDecomposition decompose.
+
+	self assert: qrDecomposition q rank equals: a rank.
+	self assert: qrDecomposition r rank equals: a rank.
+
+	reconstruction := qrDecomposition q * qrDecomposition r.
+	self assert: reconstruction closeTo: a
+]
+
+{ #category : 'tests' }
+PMQRTest >> testQRDecompositionWithPivotOnRankDeficientMatrix [
+
+	| a qrDecomposition expectedQR expectedPivot reconstruction |
+	a := PMMatrix rows: {
+			     { 1. 2. 3 }.
+			     { 4. 5. 6 }.
+			     { 7. 8. 9 } }.
+	expectedQR := PMMatrix rows: {
+			              { 3. 1. 2 }.
+			              { 6. 4. 5 }.
+			              { 9. 7. 8 } }.
+	expectedPivot := #( 3 1 2 ).
+
+	qrDecomposition := PMQRDecomposition of: a.
+	qrDecomposition decomposeWithPivot.
+
+	self assert: qrDecomposition q rank equals: a rank.
+	self assert: qrDecomposition r rank equals: a rank.
+	self assert: qrDecomposition q * qrDecomposition r closeTo: expectedQR.
+	self assert: qrDecomposition pivot equals: expectedPivot.
+
+	reconstruction := qrDecomposition q * qrDecomposition r * qrDecomposition permutationMatrixFromPivot inverse.
+	self assert: reconstruction closeTo: a
+]
+
+{ #category : 'tests' }
 PMQRTest >> testQRFactorization [
 
 	| a qr |
