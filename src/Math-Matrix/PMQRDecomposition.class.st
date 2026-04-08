@@ -61,6 +61,8 @@ https://en.wikipedia.org/wiki/QR_decomposition#Using_Householder_reflections
 
 { #category : 'arithmetic' }
 PMQRDecomposition >> decomposeWithPivot [
+	"Variant of the decompose method that introduces a pivot. At the beginning of each step it takes the largest remaining column, thus introducing a pivot. For more info, look at https://en.wikipedia.org/wiki/QR_decomposition#Column_pivoting.
+Here the pivot is stored as an array containing the new order of the columns of the input matrix. It can be used to generate the proper permutation matrix with the permutationMatrixFromPivot method"
 
 	| i vectorOfNormSquareds rank positionOfMaximum matrixOfMinor |
 	vectorOfNormSquareds := matrixToDecompose columnsCollect: [ :columnVector | columnVector * columnVector ].
